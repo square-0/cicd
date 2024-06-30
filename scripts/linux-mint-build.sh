@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-pushd ..
+
+# Set working directory to the local repo root.
+pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
+
+
+# Build executable.
 python3 -OO -m PyInstaller \
     --noconfirm \
     --clean \
@@ -11,5 +16,3 @@ python3 -OO -m PyInstaller \
     --noupx \
     --onefile \
     src/main.py
-popd
-
