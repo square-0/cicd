@@ -6,7 +6,16 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Add pip's module directories to the PATH.
-echo export PATH=\$PATH:$HOME/.local/bin >> ~/.bashrc
+mkdir -p ~/.local/bin
+echo export PATH="\${PATH}:${HOME}/.local/bin" >> ~/.bashrc
+
+
+# Write __pycache__ files to home rather than repo.
+mkdir -p ~/.cache/Python
+echo export PYTHONPYCACHEPREFIX="${HOME}/.cache/Python" >> ~/.bashrc
+
+
+# Source new changes to the environment.
 source ~/.bashrc
 
 

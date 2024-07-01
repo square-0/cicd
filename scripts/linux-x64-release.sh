@@ -34,7 +34,7 @@ cp -r docs/* dist/Proxygen/docs/guides
 # Make portable archive.
 mkdir -p release
 pushd dist
-tar -czvf ../release/proxygen-linux-x64-$PXG_VER.tgz Proxygen
+tar -czvf ../release/proxygen-linux-x64-${PXG_VER}.tgz Proxygen
 popd
 
 
