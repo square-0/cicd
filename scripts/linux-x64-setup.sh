@@ -23,7 +23,7 @@ sudo apt-get install -y \
 # to reduce file size and attack surface.
 python3 -m venv venv
 source venv/bin/activate
-python3 -m pip install -r scripts/requirements.txt
+python3 -m pip install -r src/requirements.txt
 
 
 # Cleanup.
