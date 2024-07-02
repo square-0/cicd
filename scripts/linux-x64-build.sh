@@ -14,20 +14,24 @@ mkdir -p build
 mkdir -p dist
 find build -mindepth 1 -delete
 find dist -mindepth 1 -delete
-mkdir -p dist/Proxygen
+mkdir -p dist/exe
 
 
-# Set the version number.
-echo $(date +"%y.%m.%d") > dist/Proxygen/VERSION
+# Set the version number at time of build, not packaging.
+echo $(date +"%y.%m.%d") > dist/exe/VERSION
+
+
+# Remove linting tools so PyInstaller doesn't bundle them.
+# TODO: pip uninstall black/flake8
 
 
 # Build executable.
-python3 -OO -m PyInstaller \
+python3.12 -OO -m PyInstaller \
     --noconfirm \
     --clean \
     --specpath build \
     --workpath build \
-    --distpath dist/Proxygen \
+    --distpath dist/exe \
     --noupx \
     --onefile \
     src/proxygen.py

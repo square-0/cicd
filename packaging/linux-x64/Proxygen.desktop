@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Proxygen
+Comment=Media offloader and proxy generator for video editors
+Icon=proxygen
+Exec=/opt/Proxygen/bin/proxygen
+Terminal=false
+Type=Application
+Categories=Video
+Keywords=offload;copy;proxy;optimized;archive;video

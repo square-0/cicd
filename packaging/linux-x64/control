@@ -1,0 +1,8 @@
+Package: proxygen
+Section: video
+Priority: optional
+HomePage: https://github.com/square-0/proxygen
+Maintainer: Square Zero <square-zero@outlook.com>
+Architecture: amd64
+Depends: 
+Description: Media offloader and proxy generator for video editors
