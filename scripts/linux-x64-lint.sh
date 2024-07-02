@@ -9,8 +9,8 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 source venv/bin/activate
 
 
-# Run all unit tests.
-python3.12 -m unittest discover -t src -s src/tests -p *.py
+# black
+# flake8
 
 
 # Cleanup.

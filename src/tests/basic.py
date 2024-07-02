@@ -13,16 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
+import unittest
 
+import proxygen
 import config
 
+class TestMain(unittest.TestCase):
+    def test_main(self):
+        self.assertEqual(proxygen.main(), 0)
 
-def main() -> int:
-    """This is the main method."""
-    print("Hello, world!")
-    return 0
+    def test_random(self):
+        self.assertEqual(config.random_method(), 42)
 
-
-if __name__ == "__main__":
-    sys.exit(main())
+if __name__ == '__main__':
+    unittest.main()

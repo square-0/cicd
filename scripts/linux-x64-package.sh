@@ -19,6 +19,7 @@ mkdir -p dist/Proxygen
 
 # Add root directory files.
 cp LICENSE.txt dist/Proxygen
+cp COPYRIGHT.txt dist/Proxygen
 cp README.md dist/Proxygen
 cp CHANGELOG.md dist/Proxygen
 
@@ -66,6 +67,8 @@ mkdir -p dist/deb
 
 
 # Add files to staging directory.
+mkdir -p dist/deb/usr/share/doc/proxygen
+cp COPYRIGHT.txt dist/deb/usr/share/doc/proxygen/copyright
 mkdir -p dist/deb/opt
 cp -r dist/Proxygen dist/deb/opt
 mkdir -p dist/deb/usr/share/applications
@@ -94,15 +97,16 @@ chmod 0755 dist/deb/DEBIAN/{pre,post}{inst,rm} || true
 mkdir -p release
 PXG_RELEASE=proxygen-linux-x64-${PXG_VERSION//./}.deb
 dpkg-deb --root-owner-group --build dist/deb release/${PXG_RELEASE}
-lintian release/${PXG_RELEASE} --info
+lintian \
+    --info \
+    -X files/hierarchy/standard,debian/changelog \
+    release/${PXG_RELEASE}
 
 
 # Generate checksums.
 pushd release
-for F in *; do
-    sha256sum --binary \
-        ${F} > \
-        ${F}.sha256
+for F in *.tgz *.deb; do
+    sha256sum --binary ${F} > ${F}.sha256
 done
 popd
 

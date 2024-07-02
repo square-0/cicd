@@ -21,8 +21,10 @@ source ~/.bashrc
 
 # Install Linux dependencies.
 sudo apt-get update
-sudo apt-get install -y software-properties-common
-sudo add-apt-repository -y ppa:deadsnakes/ppa
+sudo apt-get install -y \
+    software-properties-common
+sudo add-apt-repository -y \
+    ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get install -y \
     python3.12 \
@@ -42,6 +44,7 @@ python3.12 -m ensurepip --upgrade
 python3.12 -m pip install --upgrade pip
 python3.12 -m pip install -r src/requirements.txt
 # TODO: pip install black/flake8 in requirements.txt
+# TODO: make two: venv/test venv/prod
 
 
 # Cleanup.

@@ -13,16 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-
-import config
-
-
-def main() -> int:
-    """This is the main method."""
-    print("Hello, world!")
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+def random_method() -> int:
+    """This is here only to make sure imports work on unit tests"""
+    return 42

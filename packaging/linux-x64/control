@@ -2,7 +2,12 @@ Package: proxygen
 Section: video
 Priority: optional
 HomePage: https://github.com/square-0/proxygen
-Maintainer: Square Zero <square-zero@outlook.com>
+Maintainer: Austin Brooks <square-zero@outlook.com>
 Architecture: amd64
-Depends: 
+Depends: libc6 (>= 2.14), zlib1g (>= 1:1.1.4)
 Description: Media offloader and proxy generator for video editors
+ Proxygen makes media management easy:
+  - Offload files from cards and hard drives, with checksums and reports
+  - Create optimized media that fixes problems like variable frame rate
+  - Create proxies at a variety of resolutions and quality levels
+  - Create smaller versions of source files, suitable for archiving
