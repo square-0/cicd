@@ -1,4 +1,4 @@
-name: linux-x64-daily
+name: linux-x64-nightly
 
 on:
   schedule:
@@ -35,4 +35,3 @@ jobs:
           name: proxygen-linux-x64-deb
           path: |
             release/proxygen-linux-x64-*.deb*
-
