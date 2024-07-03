@@ -27,7 +27,7 @@ cp CHANGELOG.md dist/Proxygen
 # Add executables.
 mkdir -p dist/Proxygen/bin
 cp -r dist/exe/* dist/Proxygen/bin
-cp packaging/linux-x64/open_with.sh dist/Proxygen/bin
+cp packaging/linux-x64/integrate.sh dist/Proxygen/bin
 
 
 # Add source code.
@@ -51,7 +51,7 @@ popd
 find dist/Proxygen -type d -exec chmod 0755 {} \;
 find dist/Proxygen -type f -exec chmod 0644 {} \;
 chmod 0755 dist/Proxygen/bin/proxygen
-chmod 0755 dist/Proxygen/bin/open_with.sh
+chmod 0755 dist/Proxygen/bin/integrate.sh
 
 
 # Make portable archive.
@@ -62,7 +62,7 @@ tar --owner=0 --group=0 -czf ../release/${PXG_RELEASE} Proxygen
 popd
 
 
-# Create staging directory for .deb package.
+# Create staging directory for deb package.
 mkdir -p dist/deb
 
 
@@ -106,14 +106,14 @@ done
 find dist/deb -type d -exec chmod 0755 {} \;
 find dist/deb -type f -exec chmod 0644 {} \;
 chmod 0755 dist/deb/opt/Proxygen/bin/proxygen
-chmod 0755 dist/deb/opt/Proxygen/bin/open_with.sh
+chmod 0755 dist/deb/opt/Proxygen/bin/integrate.sh
 for F in dist/deb/DEBIAN/{pre,post}{inst,rm}; do
     [ -e "${F}" ] || continue
     chmod 0755 ${F}
 done
 
 
-# Make .deb package.
+# Make deb package.
 mkdir -p release
 PXG_RELEASE=proxygen-linux-x64-${PXG_VERSION//./}.deb
 dpkg-deb --root-owner-group --build dist/deb release/${PXG_RELEASE}
