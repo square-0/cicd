@@ -114,12 +114,15 @@ done
 
 
 # Make deb package.
+# TODO: lintian on Ubuntu 20.04 doesn't recognize:
+# -X files/hierarchy/standard
+# Add it when upgrading to Ubuntu 22.04.
 mkdir -p release
 PXG_RELEASE=proxygen-linux-x64-${PXG_VERSION//./}.deb
 dpkg-deb --root-owner-group --build dist/deb release/${PXG_RELEASE}
 lintian \
     --info \
-    -X files/hierarchy/standard,debian/changelog \
+    -X debian/changelog \
     release/${PXG_RELEASE}
 
 
