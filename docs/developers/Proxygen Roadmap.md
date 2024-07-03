@@ -14,11 +14,11 @@
 - ❏ Unit tested with **unittest**
 - ❏ Compiled with **PyInstaller**
 - ❏ I18N/L10N with **gettext**
-- ❏ FFmpeg static executable
+- ❏ Static executable of **FFmpeg**
 - Documentation
-  - ❏ HTML user guides
-  - ❏ HTML developer guides
-  - ❏ HTML of Python docstrings
+  - ❏ User guides in **HTML**
+  - ❏ Developer guides in **HTML**
+  - ❏ Python docstrings in **HTML**
 - Cross-platform support
   - Linux
     - ❏ x64
