@@ -1,8 +1,8 @@
 Package: proxygen
 Section: video
 Priority: optional
-HomePage: https://github.com/square-0/proxygen
-Maintainer: Austin Brooks <square-zero@outlook.com>
+HomePage: https://github.com/austincbrooks/proxygen
+Maintainer: Austin Brooks <ab.proxygen@outlook.com>
 Architecture: amd64
 Depends: libc6 (>= 2.14), zlib1g (>= 1:1.1.4)
 Description: Media offloader and proxy generator for video editors

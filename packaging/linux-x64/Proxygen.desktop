@@ -6,4 +6,4 @@ Exec=/opt/Proxygen/bin/proxygen
 Terminal=false
 Type=Application
 Categories=Video
-Keywords=offload;copy;proxy;optimized;archive;video
+Keywords=offload;copy;optimized;proxy;archive;video

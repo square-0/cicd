@@ -73,16 +73,33 @@ mkdir -p dist/deb/opt
 cp -r dist/Proxygen dist/deb/opt
 mkdir -p dist/deb/usr/share/applications
 cp packaging/linux-x64/Proxygen.desktop dist/deb/usr/share/applications
-mkdir -p dist/deb/usr/share/icons/hicolor/64x64/apps
-cp packaging/icons/proxygen_icon_64x64.png dist/deb/usr/share/icons/hicolor/64x64/apps/proxygen.png
 
 
-# Build package's control file.
+# Add icons to staging directory.
+mkdir -p dist/deb/usr/share/icons/hicolor/scalable/apps
+cp \
+    packaging/icons/proxygen.svg \
+    dist/deb/usr/share/icons/hicolor/scalable/apps/proxygen.svg
+for F in packaging/icons/proxygen_*.png; do
+    [ -e "${F}" ] || continue
+    PXG_ICON_RES=$(basename ${F/proxygen_/} .png)
+    mkdir -p dist/deb/usr/share/icons/hicolor/${PXG_ICON_RES}/apps
+    cp \
+        ${F} \
+        dist/deb/usr/share/icons/hicolor/${PXG_ICON_RES}/apps/proxygen.png
+done
+
+
+# Add control files for package.
 mkdir -p dist/deb/DEBIAN
 cp packaging/linux-x64/control dist/deb/DEBIAN
 echo "Version: ${PXG_VERSION}" >> dist/deb/DEBIAN/control
 PXG_DEB_KB=$(du -s dist/deb | awk '{print $1;}')
 echo "Installed-Size: ${PXG_DEB_KB}" >> dist/deb/DEBIAN/control
+for F in packaging/linux-x64/{pre,post}{inst,rm}; do
+    [ -e "${F}" ] || continue
+    cp ${F} dist/deb/DEBIAN
+done
 
 
 # Set file permissions.
@@ -90,7 +107,10 @@ find dist/deb -type d -exec chmod 0755 {} \;
 find dist/deb -type f -exec chmod 0644 {} \;
 chmod 0755 dist/deb/opt/Proxygen/bin/proxygen
 chmod 0755 dist/deb/opt/Proxygen/bin/open_with.sh
-chmod 0755 dist/deb/DEBIAN/{pre,post}{inst,rm} || true
+for F in dist/deb/DEBIAN/{pre,post}{inst,rm}; do
+    [ -e "${F}" ] || continue
+    chmod 0755 ${F}
+done
 
 
 # Make .deb package.
@@ -106,6 +126,7 @@ lintian \
 # Generate checksums.
 pushd release
 for F in *.tgz *.deb; do
+    [ -e "${F}" ] || continue
     sha256sum --binary ${F} > ${F}.sha256
 done
 popd
