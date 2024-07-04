@@ -12,8 +12,9 @@
 - ❏ Formatted with **black**
 - ❏ Linted with **flake8**
 - ❏ Unit tested with **unittest**
+- ❏ I18N/L10N + plurals with **gettext**
+- ❏ Numbers/dates localized with **locale**
 - ❏ Compiled with **PyInstaller**
-- ❏ I18N/L10N with **gettext**
 - ❏ Static executable of **FFmpeg**
 - Documentation
   - ❏ User guides in **HTML**

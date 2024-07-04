@@ -34,3 +34,14 @@ env PYINSTALLER_COMPILE_BOOTLOADER
 ## GitHub Actions and workflow notes
 
 [https://stackoverflow.com/questions/63014786/how-to-schedule-a-github-actions-nightly-build-but-run-it-only-when-there-where] last answer
+
+## I18N/L10N
+
+[https://github.com/python/cpython/issues/62519]
+[https://stackoverflow.com/questions/56545202/french-translation-raises-valueerrorinvalid-token-in-plural-form-s-value]
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+[https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Header-Entry.html]
+[https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Translating-plural-forms.html]
+[https://translationproject.org/html/welcome.html]

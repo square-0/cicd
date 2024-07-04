@@ -13,28 +13,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-
-from localize import _, ngettext, pxg_set_translation
+import gettext
 
 
-def main() -> int:
-    """This is the main method."""
+def _(msgid: str) -> str:
+    if '_pxg_translation' not in globals():
+        pxg_set_translation()
 
-    pxg_set_translation("es")
-
-    print(_("Hello, world!"))
-
-    count = 1
-    msg = ngettext("All {0} of you", "Oops, {0} of you", count)
-    print(msg.format(count))
-
-    count = 32
-    msg = ngettext("All {0} of you", "Oops, {0} of you", count)
-    print(msg.format(count))
-
-    return 0
+    global _pxg_translation
+    return _pxg_translation.gettext(msgid)
 
 
-if __name__ == "__main__":
-    sys.exit(main())
+def ngettext(msgid1: str, msgidN: str, num: int) -> str:
+    if '_pxg_translation' not in globals():
+        pxg_set_translation()
+
+    global _pxg_translation
+    return _pxg_translation.ngettext(msgid1, msgidN, num)
+
+
+def pxg_set_translation(language: str=None) -> None:
+    languages = [language] if language else None
+
+    global _pxg_translation
+    _pxg_translation = gettext.translation("proxygen", "../locales", languages, fallback=True)

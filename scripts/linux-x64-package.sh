@@ -30,6 +30,13 @@ cp -r dist/exe/* dist/Proxygen/bin
 cp packaging/linux-x64/integrate.sh dist/Proxygen/bin
 
 
+# Add executable support files.
+shopt -s globstar
+cp -r locales/**/*.mo dist/Proxygen
+shopt -u globstar
+cp -r icons dist/Proxygen
+
+
 # Add source code.
 cp -r src dist/Proxygen
 

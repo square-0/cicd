@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Austin Brooks <square-zero@outlook.com>
+# Copyright (C) 2024, Austin Brooks <ab.proxygen@outlook.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,15 +15,17 @@
 
 import unittest
 
+from localize import _, ngettext
 import proxygen
-import config
+
 
 class TestMain(unittest.TestCase):
+    def test_translate(self):
+        self.assertEqual(localize._(""), "")
+
     def test_main(self):
         self.assertEqual(proxygen.main(), 0)
 
-    def test_random(self):
-        self.assertEqual(config.random_method(), 42)
 
 if __name__ == '__main__':
     unittest.main()

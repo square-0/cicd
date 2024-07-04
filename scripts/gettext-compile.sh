@@ -5,14 +5,11 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
-# Activate virtual environment.
-source venv/bin/activate
-
-
-# black
-# flake8
-# In flake8 we're able to specify
-# builtins = _
+# Compile .po files into .mo files.
+find locales -name proxygen.po -exec \
+    bash -c \
+    'msgfmt --output-file "${0/.po/.mo}" "${0}"' \
+    {} \;
 
 
 # Cleanup.
