@@ -30,3 +30,7 @@ sudo dpkg -P proxygen
 env PYINSTALLER_COMPILE_BOOTLOADER
 [https://pyinstaller.org/en/stable/bootloader-building.html]
 [https://github.com/pyinstaller/pyinstaller/issues/6477]
+
+## GitHub Actions and workflow notes
+
+[https://stackoverflow.com/questions/63014786/how-to-schedule-a-github-actions-nightly-build-but-run-it-only-when-there-where] last answer
