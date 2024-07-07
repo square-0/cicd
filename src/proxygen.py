@@ -1,4 +1,4 @@
-# Copyright (C) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,22 +15,23 @@
 
 import sys
 
-from localize import _, ngettext, pxg_set_translation
+from global_logs import *
+from global_i18n import *
 
 
 def main() -> int:
     """This is the main method."""
 
-    pxg_set_translation("es")
+    pxg_set_locale("es")
 
-    print(_("Hello, world!"))
+    print(i18n_msg("Hello, world!"))
 
     count = 1
-    msg = ngettext("All {0} of you", "Oops, {0} of you", count)
+    msg = i18n_msgN("All {0} of you", "Oops, {0} of you", count)
     print(msg.format(count))
 
     count = 32
-    msg = ngettext("All {0} of you", "Oops, {0} of you", count)
+    msg = i18n_msgN("All {0} of you", "Oops, {0} of you", count)
     print(msg.format(count))
 
     return 0

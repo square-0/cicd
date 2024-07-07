@@ -1,3 +1,18 @@
+# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 name: linux-x64-release
 
 on:
@@ -6,25 +21,5 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Build and package
-        run: |
-          cd scripts
-          ./linux-x64-setup.sh
-          ./linux-x64-lint.sh
-          ./linux-x64-test.sh
-          ./linux-x64-build.sh
-          ./gettext-compile.sh
-          ./linux-x64-package.sh
-
-      - name: Release binaries
-        uses: actions/upload-artifact@v4
-        with:
-          name: proxygen-linux-x64
-          path: |
-            release/proxygen-linux-x64-*
+    if: ${{ github.repository_owner == 'square-0' }}
+    # call linux-64 to push to release

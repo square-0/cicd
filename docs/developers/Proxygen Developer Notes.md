@@ -45,3 +45,11 @@ env PYINSTALLER_COMPILE_BOOTLOADER
 [https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Header-Entry.html]
 [https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Translating-plural-forms.html]
 [https://translationproject.org/html/welcome.html]
+[https://stackoverflow.com/questions/14547631/python-locale-error-unsupported-locale-setting]
+
+Poedit .PO file editor GUI
+
+- [https://github.com/vslavik/poedit]
+- [https://poedit.net]
+
+[Block screen saver](https://stackoverflow.com/questions/63076389/python-prevent-the-screen-saver)

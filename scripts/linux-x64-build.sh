@@ -1,12 +1,27 @@
 #!/usr/bin/env bash
 
+# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 # Set working directory to the local repo root.
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Activate virtual environment.
-source venv/bin/activate
+source venv/prod/bin/activate
 
 
 # Clean the build environment.
@@ -14,24 +29,19 @@ mkdir -p build
 mkdir -p dist
 find build -mindepth 1 -delete
 find dist -mindepth 1 -delete
-mkdir -p dist/exe
 
 
 # Set the version number at time of build, not packaging.
-echo $(date +"%y.%m.%d") > dist/exe/VERSION
-
-
-# Remove linting tools so PyInstaller doesn't bundle them.
-# TODO: pip uninstall black/flake8
+echo $(date +"%Y.%m.%d") > dist/VERSION
 
 
 # Build executable.
 python3.12 -OO -m PyInstaller \
-    --noconfirm \
     --clean \
+    --noconfirm \
     --specpath build \
     --workpath build \
-    --distpath dist/exe \
+    --distpath dist \
     --noupx \
     --onefile \
     src/proxygen.py

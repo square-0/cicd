@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Proxygen 24.07.04\n"
 "Report-Msgid-Bugs-To: Austin Brooks <ab.proxygen@outlook.com>\n"
-"POT-Creation-Date: 2024-07-04 16:28-0400\n"
+"POT-Creation-Date: 2024-07-05 19:06-0400\n"
 "PO-Revision-Date: 2024-07-04 15:59-0400\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Spanish <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/proxygen.py:26
+#: src/proxygen.py:27
 msgid "Hello, world!"
 msgstr "Hola, mundo!"
 
-#: src/proxygen.py:29 src/proxygen.py:33
+#: src/proxygen.py:30 src/proxygen.py:34
 #, python-brace-format
 msgid "All {0} of you"
 msgid_plural "Oops, {0} of you"

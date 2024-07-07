@@ -43,7 +43,20 @@
 - ❏ Build scripts with **bash**
 - ❏ Nightly and release builds with **GitHub Actions**
 
+## Transcoding objectives
+
+- ❏ Streams retain their stream index ID
+- ❏ Convert variable frame rate to constant frame rate
+- Simple options for specifying quality level
+  - ❏ Lossless
+  - ❏ Transparent
+  - ❏ Balanced
+  - ❏ Fast encode time
+  - ❏ Small file size
+
 ## Feature objectives
 
 - ❏ Logging
 - ❏ Multi-node farm processing
+- Advanced features
+  - ❏ Disable screen saver and sleep modes

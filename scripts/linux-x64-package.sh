@@ -1,64 +1,83 @@
 #!/usr/bin/env bash
 
+# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 
 # Set working directory to the local repo root.
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Activate virtual environment.
-source venv/bin/activate
+source venv/prod/bin/activate
 
 
 # Retrieve version number from the build.
-PXG_VERSION=$(cat dist/exe/VERSION)
+if [ ! -f dist/VERSION ]; then
+    exit 1
+fi
+PXG_VERSION=$(cat dist/VERSION)
 
 
 # Create staging directory for portable archive.
-mkdir -p dist/Proxygen
+mkdir -p dist/tgz/Proxygen
 
 
 # Add root directory files.
-cp LICENSE.txt dist/Proxygen
-cp COPYRIGHT.txt dist/Proxygen
-cp README.md dist/Proxygen
-cp CHANGELOG.md dist/Proxygen
+cp LICENSE.txt dist/tgz/Proxygen
+cp COPYRIGHT.txt dist/tgz/Proxygen
+cp README.md dist/tgz/Proxygen
+cp CHANGELOG.md dist/tgz/Proxygen
 
 
 # Add executables.
-mkdir -p dist/Proxygen/bin
-cp -r dist/exe/* dist/Proxygen/bin
-cp packaging/linux-x64/integrate.sh dist/Proxygen/bin
+mkdir -p dist/tgz/Proxygen/bin
+cp dist/VERSION dist/tgz/Proxygen/bin
+cp dist/proxygen dist/tgz/Proxygen/bin
+cp packaging/linux-x64/os_*.sh dist/tgz/Proxygen/bin
 
 
 # Add executable support files.
 shopt -s globstar
-cp -r locales/**/*.mo dist/Proxygen
+cp -r locales/**/*.mo dist/tgz/Proxygen
 shopt -u globstar
-cp -r icons dist/Proxygen
+cp -r icons dist/tgz/Proxygen
 
 
 # Add source code.
-cp -r src dist/Proxygen
+cp -r src dist/tgz/Proxygen
 
 
 # Add user and developer documentation.
-cp -r docs dist/Proxygen
+cp -r docs dist/tgz/Proxygen
 
 
 # Add auto-generated code documentation.
-mkdir -p dist/Proxygen/docs/modules
-pushd dist/Proxygen/docs/modules
+mkdir -p dist/tgz/Proxygen/docs/modules
+pushd dist/tgz/Proxygen/docs/modules
 shopt -s globstar
-python3.12 -m pydoc -w ../../../../src/**/*.py
+python3.12 -m pydoc -w ../../../../../src/**/*.py
 shopt -u globstar
 popd
 
 
 # Set file permissions.
-find dist/Proxygen -type d -exec chmod 0755 {} \;
-find dist/Proxygen -type f -exec chmod 0644 {} \;
-chmod 0755 dist/Proxygen/bin/proxygen
-chmod 0755 dist/Proxygen/bin/integrate.sh
+find dist/tgz/Proxygen -type d -exec chmod 0755 {} \;
+find dist/tgz/Proxygen -type f -exec chmod 0644 {} \;
+chmod 0755 dist/tgz/Proxygen/bin/proxygen
+chmod 0755 dist/tgz/Proxygen/bin/os_*.sh
 
 
 # Make portable archive.
@@ -77,7 +96,7 @@ mkdir -p dist/deb
 mkdir -p dist/deb/usr/share/doc/proxygen
 cp COPYRIGHT.txt dist/deb/usr/share/doc/proxygen/copyright
 mkdir -p dist/deb/opt
-cp -r dist/Proxygen dist/deb/opt
+cp -r dist/tgz/Proxygen dist/deb/opt
 mkdir -p dist/deb/usr/share/applications
 cp packaging/linux-x64/Proxygen.desktop dist/deb/usr/share/applications
 
@@ -113,7 +132,7 @@ done
 find dist/deb -type d -exec chmod 0755 {} \;
 find dist/deb -type f -exec chmod 0644 {} \;
 chmod 0755 dist/deb/opt/Proxygen/bin/proxygen
-chmod 0755 dist/deb/opt/Proxygen/bin/integrate.sh
+chmod 0755 dist/deb/opt/Proxygen/bin/os_*.sh
 for F in dist/deb/DEBIAN/{pre,post}{inst,rm}; do
     [ -e "${F}" ] || continue
     chmod 0755 ${F}
