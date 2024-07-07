@@ -20,6 +20,10 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
+# Run sanity pre-checks.
+./scripts/linux-x64-precheck.sh || exit 1
+
+
 # Activate virtual environment.
 source venv/test/bin/activate
 

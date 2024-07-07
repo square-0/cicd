@@ -20,6 +20,10 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
+# The Python interpreter that all scripts should use.
+echo export PXG_PY_CMD=python3.12 >> ~/.bashrc
+
+
 # Add pip's script directories to the PATH.
 mkdir -p ~/.local/bin
 echo export PATH="\${PATH}:${HOME}/.local/bin" >> ~/.bashrc
@@ -45,10 +49,10 @@ sudo apt-get install -y \
     language-pack-en \
     language-pack-es \
     language-pack-nb \
-    python3.12 \
-    python3.12-dev \
-    python3.12-venv \
-    python3.12-tk \
+    ${PXG_PY_CMD} \
+    ${PXG_PY_CMD}-dev \
+    ${PXG_PY_CMD}-venv \
+    ${PXG_PY_CMD}-tk \
     gettext \
     lintian
 
@@ -59,19 +63,19 @@ sudo apt-get install -y \
 # to reduce file size and attack surface.
 
 # Production environment.
-python3.12 -m venv venv/prod
+${PXG_PY_CMD} -m venv venv/prod
 source venv/prod/bin/activate
-python3.12 -m ensurepip --upgrade
-python3.12 -m pip install --upgrade pip
-python3.12 -m pip install -r src/requirements.txt
+${PXG_PY_CMD} -m ensurepip --upgrade
+${PXG_PY_CMD} -m pip install --upgrade pip
+${PXG_PY_CMD} -m pip install -r src/requirements.txt
 
 # Test environment.
-python3.12 -m venv venv/test
+${PXG_PY_CMD} -m venv venv/test
 source venv/test/bin/activate
-python3.12 -m ensurepip --upgrade
-python3.12 -m pip install --upgrade pip
-python3.12 -m pip install -r src/requirements.txt
-python3.12 -m pip install \
+${PXG_PY_CMD} -m ensurepip --upgrade
+${PXG_PY_CMD} -m pip install --upgrade pip
+${PXG_PY_CMD} -m pip install -r src/requirements.txt
+${PXG_PY_CMD} -m pip install \
     black \
     flake8
 

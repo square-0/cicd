@@ -20,19 +20,11 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
-# Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 1
-
-
-# Activate virtual environment.
-source venv/test/bin/activate
-
-
-# Run all unit tests.
-${PXG_PY_CMD} -m unittest discover \
-    --top-level-directory src \
-    --start-directory src/tests \
-    --pattern *.py
+# Check that a Python interpreter is set.
+if [ ! -v PXG_PY_CMD ]; then
+    echo ERROR: Environment variable PXG_PY_CMD was not set to an interpreter
+    exit 1
+fi
 
 
 # Cleanup.

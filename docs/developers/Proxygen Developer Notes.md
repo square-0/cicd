@@ -34,6 +34,9 @@ env PYINSTALLER_COMPILE_BOOTLOADER
 ## GitHub Actions and workflow notes
 
 [https://stackoverflow.com/questions/63014786/how-to-schedule-a-github-actions-nightly-build-but-run-it-only-when-there-where] last answer
+[https://stackoverflow.com/questions/60418323/triggering-a-new-workflow-from-another-workflow]
+[https://stackoverflow.com/questions/75679683/how-can-i-auto-generate-a-release-note-and-create-a-release-using-github-actions]
+[https://github.com/softprops/action-gh-release]
 
 ## I18N/L10N
 

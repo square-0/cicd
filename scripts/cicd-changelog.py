@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 # Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -15,25 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
+import sys
 
 
-# Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 1
-
-
-# Activate virtual environment.
-source venv/test/bin/activate
-
-
-# Run all unit tests.
-${PXG_PY_CMD} -m unittest discover \
-    --top-level-directory src \
-    --start-directory src/tests \
-    --pattern *.py
-
-
-# Cleanup.
-popd
+with open("CHANGELOG.md", "r", encoding="utf-8") as all_handle:
+    with open("CHANGELOG-latest.md", "w", encoding="utf-8") as latest_handle:
+        h2_count = 0
+        for line in all_handle:
+            if line[0:3] == "## ":
+                h2_count += 1
+            if h2_count >= 3:
+                sys.exit(0)
+            else:
+                latest_handle.write(line)

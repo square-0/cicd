@@ -20,6 +20,10 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
+# Run sanity pre-checks.
+./scripts/linux-x64-precheck.sh || exit 1
+
+
 # Activate virtual environment.
 source venv/prod/bin/activate
 
@@ -32,11 +36,11 @@ find dist -mindepth 1 -delete
 
 
 # Set the version number at time of build, not packaging.
-echo $(date +"%Y.%m.%d") > dist/VERSION
+echo $(date --utc "+%Y.%m.%d") > dist/VERSION
 
 
 # Build executable.
-python3.12 -OO -m PyInstaller \
+${PXG_PY_CMD} -OO -m PyInstaller \
     --clean \
     --noconfirm \
     --specpath build \

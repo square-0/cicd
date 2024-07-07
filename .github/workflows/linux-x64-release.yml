@@ -17,9 +17,15 @@ name: linux-x64-release
 
 on:
   push:
-    tags: 'v*'
+    tags:
+      - v*
+
+permissions:
+  contents: write
 
 jobs:
-  build:
+  release:
+    name: Release
+    runs-on: ubuntu-20.04
     if: ${{ github.repository_owner == 'square-0' }}
     # call linux-64 to push to release

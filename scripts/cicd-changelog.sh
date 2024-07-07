@@ -28,11 +28,8 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 source venv/test/bin/activate
 
 
-# Run all unit tests.
-${PXG_PY_CMD} -m unittest discover \
-    --top-level-directory src \
-    --start-directory src/tests \
-    --pattern *.py
+# Run Python script.
+${PXG_PY_CMD} scripts/cicd-changelog.py
 
 
 # Cleanup.

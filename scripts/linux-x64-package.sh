@@ -20,6 +20,10 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
+# Run sanity pre-checks.
+./scripts/linux-x64-precheck.sh || exit 1
+
+
 # Activate virtual environment.
 source venv/prod/bin/activate
 
@@ -68,7 +72,7 @@ cp -r docs dist/tgz/Proxygen
 mkdir -p dist/tgz/Proxygen/docs/modules
 pushd dist/tgz/Proxygen/docs/modules
 shopt -s globstar
-python3.12 -m pydoc -w ../../../../../src/**/*.py
+${PXG_PY_CMD} -m pydoc -w ../../../../../src/**/*.py
 shopt -u globstar
 popd
 

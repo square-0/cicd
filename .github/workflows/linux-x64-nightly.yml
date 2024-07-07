@@ -21,6 +21,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  nightly:
     if: ${{ github.repository_owner == 'square-0' }}
-    # call linux-64 to push to pre-release
+    uses: ./.github/workflows/linux-x64.yml
+    secrets: inherit
+    with:
+      target: nightly
