@@ -21,7 +21,7 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # The Python interpreter that all scripts should use.
-echo export PXG_PY_CMD=python3.12 >> ~/.bashrc
+echo export PXG_PY_CMD="python3.12" >> ~/.bashrc
 
 
 # Add pip's script directories to the PATH.
