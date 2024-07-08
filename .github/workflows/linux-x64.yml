@@ -68,8 +68,15 @@ jobs:
           ./cicd-changelog.sh
           popd
 
+          pushd release
+          echo INFO: Files in the release folder...
+          ls -al
+          popd
+
+          echo INFO: Upload target is ${{ github.event.inputs.target }}
+
       - name: Upload as an artifact
-        if: ${{ github.event.inputs.target == 'artifact' }}
+        if: always() && ${{ github.event.inputs.target == 'artifact' }}
         uses: actions/upload-artifact@v4
         with:
           name: proxygen-linux-x64
@@ -78,7 +85,7 @@ jobs:
             release/proxygen-linux-x64-*.deb*
 
       - name: Upload as a pre-release
-        if: ${{ github.event.inputs.target == 'nightly' }}
+        if: always() && ${{ github.event.inputs.target == 'nightly' }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: nightly
