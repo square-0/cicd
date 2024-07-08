@@ -15,6 +15,18 @@
 
 name: linux-x64
 
+on:
+  workflow_call:
+    inputs:
+      TARGET:
+        description: 'The tag where assets should be published'
+        type: string
+        required: true
+        default: 'nightly'
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -25,23 +37,43 @@ jobs:
 
       - name: Build and package
         run: |
-          cd scripts
+          pushd scripts
           ./linux-x64-setup.sh
           ./linux-x64-test.sh
           ./linux-x64-build.sh
           ./gettext-compile.sh
           ./linux-x64-package.sh
+          ./cicd-changelog.sh
+          popd
 
-      - name: Upload portable archive
-        uses: actions/upload-artifact@v4
+      - name: Upload as a pre-release
+        if: ${{ github.event.inputs.TARGET == 'nightly' }}
+        uses: softprops/action-gh-release@v2
         with:
-          name: proxygen-linux-x64-tgz
-          path: |
+          tag_name: nightly
+          body_path: CHANGELOG-latest.md
+          files: |
             release/proxygen-linux-x64-*.tgz*
-
-      - name: Upload Debian package
-        uses: actions/upload-artifact@v4
-        with:
-          name: proxygen-linux-x64-deb
-          path: |
             release/proxygen-linux-x64-*.deb*
+          fail_on_unmatched_files: true
+          # name: 'Nightly build'
+          # prerelease: true
+          # draft: false
+            
+
+
+
+
+      # - name: Upload portable archive
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: proxygen-linux-x64-tgz
+      #     path: |
+      #       release/proxygen-linux-x64-*.tgz*
+
+      # - name: Upload Debian package
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: proxygen-linux-x64-deb
+      #     path: |
+      #       release/proxygen-linux-x64-*.deb*

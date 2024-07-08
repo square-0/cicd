@@ -18,10 +18,10 @@ name: linux-x64-release
 on:
   push:
     tags:
-      - v*
+      - 'v*'
 
-permissions:
-  contents: write
+# permissions:
+#   contents: write
 
 jobs:
   release:
