@@ -57,7 +57,7 @@ cp packaging/linux-x64/os_*.sh dist/tgz/Proxygen/bin
 shopt -s globstar
 cp -r locales/**/*.mo dist/tgz/Proxygen
 shopt -u globstar
-cp -r icons dist/tgz/Proxygen
+cp -r packaging/icons dist/tgz/Proxygen
 
 
 # Add source code.
@@ -87,8 +87,8 @@ chmod 0755 dist/tgz/Proxygen/bin/os_*.sh
 # Make portable archive.
 mkdir -p release
 PXG_RELEASE=proxygen-linux-x64-${PXG_VERSION//./}.tgz
-pushd dist
-tar --owner=0 --group=0 -czf ../release/${PXG_RELEASE} Proxygen
+pushd dist/tgz
+tar --owner=0 --group=0 -czf ../../release/${PXG_RELEASE} Proxygen
 popd
 
 
