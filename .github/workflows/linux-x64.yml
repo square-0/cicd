@@ -19,24 +19,39 @@ on:
   workflow_call:
     inputs:
       TARGET:
-        description: 'The tag where assets should be published'
+        description: 'Where assets should be published: artifact, nightly, release'
         type: string
         required: true
-        default: 'nightly'
+  workflow_dispatch:
+    inputs:
+      TARGET:
+        description: 'Where assets should be published: artifact, nightly, release'
+        type: string
+        required: true
+        default: 'artifact'
 
 jobs:
   build:
     runs-on: ubuntu-20.04
 
+    permissions:
+      contents: write
+
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Set environment variables
         run: |
-          # Add pip's script directories to the PATH.
-          echo PATH="${PATH}:${HOME}/.local/bin" >> $GITHUB_ENV
-          # Prevent __pycache__ data from appearing in a packaged release.
-          echo PYTHONPYCACHEPREFIX="${HOME}/.cache/Python" >> $GITHUB_ENV
-          # The Python interpreter that all scripts should use.
-          echo PXG_PY_CMD="python3.12" >> $GITHUB_ENV
+          pushd scripts
+          ./linux-x64-env.sh
+          popd
+          # # Add pip's script directories to the PATH.
+          # echo PATH="${PATH}:${HOME}/.local/bin" >> $GITHUB_ENV
+          # # Prevent __pycache__ data from appearing in a packaged release.
+          # echo PYTHONPYCACHEPREFIX="${HOME}/.cache/Python" >> $GITHUB_ENV
+          # # The Python interpreter that all scripts should use.
+          # echo PXG_PY_CMD="python3.12" >> $GITHUB_ENV
 
       # - name: Print environment variables
       #   run: |
@@ -45,14 +60,9 @@ jobs:
       #     echo PYTHONPYCACHEPREFIX: ${PYTHONPYCACHEPREFIX}
       #     echo PXG_PY_CMD: ${PXG_PY_CMD}
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Build and package
         run: |
-          ls -al
           pushd scripts
-          ls -al
           ./linux-x64-setup.sh
           ./linux-x64-test.sh
           ./linux-x64-build.sh
@@ -75,20 +85,16 @@ jobs:
           # prerelease: true
           # draft: false
             
+      - name: Upload as a portable archive artifact
+        if: ${{ github.event.inputs.TARGET == 'artifact' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: proxygen-linux-x64-tgz
+          path: release/proxygen-linux-x64-*.tgz*
 
-
-
-
-      # - name: Upload portable archive
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: proxygen-linux-x64-tgz
-      #     path: |
-      #       release/proxygen-linux-x64-*.tgz*
-
-      # - name: Upload Debian package
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: proxygen-linux-x64-deb
-      #     path: |
-      #       release/proxygen-linux-x64-*.deb*
+      - name: Upload as a Debian package artifact
+        if: ${{ github.event.inputs.TARGET == 'artifact' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: proxygen-linux-x64-deb
+          path: release/proxygen-linux-x64-*.deb*
