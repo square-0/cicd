@@ -41,23 +41,22 @@ jobs:
           # The Python interpreter that all scripts should use.
           echo PXG_PY_CMD="python3.12" >> $GITHUB_ENV
 
-      - name: Print environment variables
-        run: |
-          echo Environment variables set by \$GITHUB_ENV:
-          echo PATH: ${PATH}
-          echo PYTHONPYCACHEPREFIX: ${PYTHONPYCACHEPREFIX}
-          echo PXG_PY_CMD: ${PXG_PY_CMD}
+      # - name: Print environment variables
+      #   run: |
+      #     echo Environment variables set by \$GITHUB_ENV:
+      #     echo PATH: ${PATH}
+      #     echo PYTHONPYCACHEPREFIX: ${PYTHONPYCACHEPREFIX}
+      #     echo PXG_PY_CMD: ${PXG_PY_CMD}
 
       - name: Build and package
         run: |
-          pushd scripts
+          cd scripts
           ./linux-x64-setup.sh
           ./linux-x64-test.sh
           ./linux-x64-build.sh
           ./gettext-compile.sh
           ./linux-x64-package.sh
           ./cicd-changelog.sh
-          popd
 
       - name: Upload as a pre-release
         if: ${{ github.event.inputs.TARGET == 'nightly' }}
