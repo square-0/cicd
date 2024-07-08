@@ -15,17 +15,18 @@
 
 name: release
 
-# on:
-#   push:
-#     tags:
-#       - 'v*'
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  release:
-    name: Release
-    runs-on: ubuntu-20.04
+  call-linux-x64:
     if: ${{ github.repository_owner == 'square-0' }}
-    # call linux-64 to push to release
+    uses: ./.github/workflows/linux-x64.yml
+    secrets: inherit
+    with:
+      TARGET: release
