@@ -29,9 +29,6 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Set environment variables
         run: |
           # Add pip's script directories to the PATH.
@@ -48,9 +45,14 @@ jobs:
       #     echo PYTHONPYCACHEPREFIX: ${PYTHONPYCACHEPREFIX}
       #     echo PXG_PY_CMD: ${PXG_PY_CMD}
 
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Build and package
         run: |
+          ls -al
           cd scripts
+          ls -al
           ./linux-x64-setup.sh
           ./linux-x64-test.sh
           ./linux-x64-build.sh
