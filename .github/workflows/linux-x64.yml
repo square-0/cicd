@@ -28,12 +28,25 @@ jobs:
   build:
     runs-on: ubuntu-20.04
 
-    # permissions:
-    #   contents: write
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set environment variables
+        run: |
+          # Add pip's script directories to the PATH.
+          echo PATH="\${PATH}:${HOME}/.local/bin" >> $GITHUB_ENV
+          # Prevent __pycache__ data from appearing in a packaged release.
+          echo PYTHONPYCACHEPREFIX="${HOME}/.cache/Python" >> $GITHUB_ENV
+          # The Python interpreter that all scripts should use.
+          echo PXG_PY_CMD="python3.12" >> $GITHUB_ENV
+
+      - name: Print environment variables
+        run: |
+          echo Environment variables set by \$GITHUB_ENV:
+          echo PATH: ${PATH}
+          echo PYTHONPYCACHEPREFIX: ${PYTHONPYCACHEPREFIX}
+          echo PXG_PY_CMD: ${PXG_PY_CMD}
 
       - name: Build and package
         run: |

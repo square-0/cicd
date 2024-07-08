@@ -21,21 +21,21 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # The Python interpreter that all scripts should use.
-echo export PXG_PY_CMD="python3.12" >> ~/.bashrc
+# echo export PXG_PY_CMD="python3.12" >> ~/.bashrc
 
 
 # Add pip's script directories to the PATH.
 mkdir -p ~/.local/bin
-echo export PATH="\${PATH}:${HOME}/.local/bin" >> ~/.bashrc
+# echo export PATH="\${PATH}:${HOME}/.local/bin" >> ~/.bashrc
 
 
 # Prevent __pycache__ data from ending up in packaged release.
 mkdir -p ~/.cache/Python
-echo export PYTHONPYCACHEPREFIX="${HOME}/.cache/Python" >> ~/.bashrc
+# echo export PYTHONPYCACHEPREFIX="${HOME}/.cache/Python" >> ~/.bashrc
 
 
 # Source new changes to the environment.
-source ~/.bashrc
+# source ~/.bashrc
 # FIXME:
 echo INFO: Cache is ${PYTHONPYCACHEPREFIX}
 echo INFO: Python command is ${PXG_PY_CMD}
