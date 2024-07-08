@@ -20,6 +20,9 @@ on:
     - cron: '10 8 * * 0-5'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   call-linux-x64:
     if: ${{ github.repository_owner == 'square-0' }}
