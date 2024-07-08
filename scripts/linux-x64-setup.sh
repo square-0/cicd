@@ -36,6 +36,9 @@ echo export PYTHONPYCACHEPREFIX="${HOME}/.cache/Python" >> ~/.bashrc
 
 # Source new changes to the environment.
 source ~/.bashrc
+# FIXME:
+echo INFO: Cache is ${PYTHONPYCACHEPREFIX}
+echo INFO: Python command is ${PXG_PY_CMD}
 
 
 # Install Linux dependencies.
