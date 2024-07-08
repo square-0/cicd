@@ -88,7 +88,7 @@ chmod 0755 dist/tgz/Proxygen/bin/os_*.sh
 mkdir -p release
 PXG_RELEASE=proxygen-linux-x64-${PXG_VERSION//./}.tgz
 pushd dist/tgz
-tar --owner=0 --group=0 -czf ../../release/${PXG_RELEASE} Proxygen
+tar --owner=0 --group=0 -czvf ../../release/${PXG_RELEASE} Proxygen
 popd
 
 
