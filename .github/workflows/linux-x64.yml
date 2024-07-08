@@ -39,17 +39,17 @@ jobs:
       actions: write
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Forced exit for forked repositories
         if: ${{ github.repository_owner == 'square-0' }}
         run: |
           echo ERROR: Repository is a fork. Cancelling workflow...
           gh run cancel ${{ github.run_id }}
           gh run watch ${{ github.run_id }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Checkout
-        uses: actions/checkout@v4
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set environment variables
         run: |
