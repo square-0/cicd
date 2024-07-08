@@ -28,7 +28,7 @@ on:
         description: 'Where assets should be published: artifact, nightly, release'
         type: string
         required: true
-        default: 'artifact'
+        default: artifact
 
 jobs:
   build:
@@ -73,10 +73,10 @@ jobs:
           ls -al
           popd
 
-          echo INFO: Upload target is ${{ github.event.inputs.target }}
+          echo INFO: Upload target is ${{ inputs.target }}
 
       - name: Upload as an artifact
-        if: always() && ${{ github.event.inputs.target == 'artifact' }}
+        if: ${{ inputs.target == 'artifact' }}
         uses: actions/upload-artifact@v4
         with:
           name: proxygen-linux-x64
@@ -85,7 +85,7 @@ jobs:
             release/proxygen-linux-x64-*.deb*
 
       - name: Upload as a pre-release
-        if: always() && ${{ github.event.inputs.target == 'nightly' }}
+        if: ${{ inputs.target == 'nightly' }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: nightly
