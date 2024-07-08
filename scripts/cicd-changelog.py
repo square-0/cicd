@@ -22,7 +22,7 @@ with open("CHANGELOG.md", "r", encoding="utf-8") as all_handle:
         for line in all_handle:
             if line[0:3] == "## ":
                 h2_count += 1
-            if h2_count >= 3:
+            if h2_count >= 2:
                 sys.exit(0)
             else:
                 latest_handle.write(line)

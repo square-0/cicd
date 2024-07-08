@@ -31,10 +31,10 @@ sudo apt-get install -y \
     language-pack-en \
     language-pack-es \
     language-pack-nb \
-    ${PXG_PY_CMD} \
-    ${PXG_PY_CMD}-dev \
-    ${PXG_PY_CMD}-venv \
-    ${PXG_PY_CMD}-tk \
+    python3.12 \
+    python3.12-dev \
+    python3.12-venv \
+    python3.12-tk \
     gettext \
     lintian
 

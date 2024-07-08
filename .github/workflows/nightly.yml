@@ -22,10 +22,22 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
+  delete-assets:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Delete assets
+        run: |
+          echo INFO: Deleting release assets...
+          gh release view nightly --json assets --jq '.assets[].name' | \
+          while read -r line; do
+              gh release delete-asset nightly "${line}" -y
+          done
+
   call-linux-x64:
-    if: ${{ github.repository_owner == 'square-0' }}
     uses: ./.github/workflows/linux-x64.yml
     secrets: inherit
     with:

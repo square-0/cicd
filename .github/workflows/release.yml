@@ -22,10 +22,10 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   call-linux-x64:
-    if: ${{ github.repository_owner == 'square-0' }}
     uses: ./.github/workflows/linux-x64.yml
     secrets: inherit
     with:

@@ -37,6 +37,8 @@ env PYINSTALLER_COMPILE_BOOTLOADER
 [https://stackoverflow.com/questions/60418323/triggering-a-new-workflow-from-another-workflow]
 [https://stackoverflow.com/questions/75679683/how-can-i-auto-generate-a-release-note-and-create-a-release-using-github-actions]
 [https://github.com/softprops/action-gh-release]
+[https://github.com/cli/cli/discussions/3000]
+[https://stackoverflow.com/questions/75237631/how-to-delete-all-releases-and-tags-in-a-github-repository]
 
 ## I18N/L10N
 
@@ -56,3 +58,17 @@ Poedit .PO file editor GUI
 - [https://poedit.net]
 
 [Block screen saver](https://stackoverflow.com/questions/63076389/python-prevent-the-screen-saver)
+
+## Making a release
+
+### Update the changelog
+
+Entry types:
+
+- **New:** A new feature or functionality
+- **Fixed:** Bug fix for unintentional problems
+- **Changed:** New behavior that affects a user's processes
+- **Improved:** Better or faster results using same processes
+- **Security:** Addresses a security or vulnerability issue
+- **Deprecated:** Warning that a feature will soon be removed
+- **Removed:** A feature is no longer available
