@@ -86,4 +86,3 @@ jobs:
           files: |
             release/proxygen-linux-x64-*.tgz*
             release/proxygen-linux-x64-*.deb*
-          # fail_on_unmatched_files: true
