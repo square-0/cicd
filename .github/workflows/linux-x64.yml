@@ -18,15 +18,23 @@ name: linux-x64
 on:
   workflow_call:
     inputs:
-      TARGET:
-        description: 'Where assets should be published: artifact, nightly, release'
-        type: string
+      target:
+        description: 'Where assets should be published'
+        type: choice
+        options:
+        - artifact
+        - nightly
+        - release
         required: true
   workflow_dispatch:
     inputs:
-      TARGET:
-        description: 'Where assets should be published: artifact, nightly, release'
-        type: string
+      target:
+        description: 'Where assets should be published'
+        type: choice
+        options:
+        - artifact
+        - nightly
+        - release
         required: true
         default: 'artifact'
 
@@ -72,7 +80,7 @@ jobs:
           popd
 
       - name: Upload as a pre-release
-        if: ${{ github.event.inputs.TARGET == 'nightly' }}
+        if: ${{ github.event.inputs.target == 'nightly' }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: nightly
@@ -86,14 +94,14 @@ jobs:
           # draft: false
             
       - name: Upload as a portable archive artifact
-        if: ${{ github.event.inputs.TARGET == 'artifact' }}
+        if: ${{ github.event.inputs.target == 'artifact' }}
         uses: actions/upload-artifact@v4
         with:
           name: proxygen-linux-x64-tgz
           path: release/proxygen-linux-x64-*.tgz*
 
       - name: Upload as a Debian package artifact
-        if: ${{ github.event.inputs.TARGET == 'artifact' }}
+        if: ${{ github.event.inputs.target == 'artifact' }}
         uses: actions/upload-artifact@v4
         with:
           name: proxygen-linux-x64-deb
