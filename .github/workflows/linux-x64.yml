@@ -32,7 +32,7 @@ jobs:
       - name: Set environment variables
         run: |
           # Add pip's script directories to the PATH.
-          echo PATH="\${PATH}:${HOME}/.local/bin" >> $GITHUB_ENV
+          echo PATH="${PATH}:${HOME}/.local/bin" >> $GITHUB_ENV
           # Prevent __pycache__ data from appearing in a packaged release.
           echo PYTHONPYCACHEPREFIX="${HOME}/.cache/Python" >> $GITHUB_ENV
           # The Python interpreter that all scripts should use.
@@ -51,7 +51,7 @@ jobs:
       - name: Build and package
         run: |
           ls -al
-          cd scripts
+          pushd scripts
           ls -al
           ./linux-x64-setup.sh
           ./linux-x64-test.sh
@@ -59,6 +59,7 @@ jobs:
           ./gettext-compile.sh
           ./linux-x64-package.sh
           ./cicd-changelog.sh
+          popd
 
       - name: Upload as a pre-release
         if: ${{ github.event.inputs.TARGET == 'nightly' }}
