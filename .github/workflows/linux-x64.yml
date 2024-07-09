@@ -75,6 +75,8 @@ jobs:
           popd
 
           echo INFO: Upload target is ${{ inputs.target }}
+          echo INFO: Tag ref is ${{ github.ref }}
+          echo INFO: Tag ref_name is ${{ github.ref_name }}
 
       - name: Upload as an artifact
         if: ${{ inputs.target == 'artifact' }}
