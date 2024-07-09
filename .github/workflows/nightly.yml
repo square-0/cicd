@@ -35,9 +35,9 @@ jobs:
       - name: Delete assets
         run: |
           echo INFO: Deleting pre-release assets...
-          gh release view refs/tags/nightly --json assets --jq '.assets[].name' | \
+          gh release view nightly --json assets --jq '.assets[].name' | \
           while read -r line; do
-              gh release delete-asset refs/tags/nightly "${line}" -y
+              gh release delete-asset nightly "${line}" -y
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
