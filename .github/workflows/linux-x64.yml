@@ -43,7 +43,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Forced exit for forked repositories
-        if: ${{ github.repository_owner == 'square-0' }}
+        if: ${{ github.repository_owner != 'square-0' }}
         run: |
           echo ERROR: Repository is a fork. Cancelling workflow...
           gh run cancel ${{ github.run_id }}
