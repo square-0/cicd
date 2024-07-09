@@ -91,7 +91,9 @@ jobs:
         if: ${{ inputs.target == 'nightly' }}
         uses: softprops/action-gh-release@v2
         with:
+          prerelease: true
           tag_name: nightly
+          name: 'Nightly build'
           body_path: CHANGELOG-latest.md
           files: |
             release/proxygen-linux-x64-*.tgz*
