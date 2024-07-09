@@ -25,17 +25,21 @@ with open("CHANGELOG.md", "r", encoding="utf-8") as all_handle:
     with open("CHANGELOG-release.md", "w", encoding="utf-8") as latest_handle:
         echo_flag = False
 
+        vnext = "vNext"
         tag_prefix = "refs/tags/"
         if sys.argv[1].startswith(tag_prefix):
-            version_header = f"## {sys.argv[1][len(tag_prefix):]}"
+            tag_name = sys.argv[1][len(tag_prefix):]
         else:
-            version_header = "## vNext"
+            tag_name = vnext
+        if tag_name[0:1] == "v":
+            version_header = f"## {tag_name}"
+        else:
+            version_header = f"## {vnext}"
 
         for line in all_handle:
             if echo_flag == False:
                 if line.strip() == version_header:
                     echo_flag = True
-                    next(all_handle)
             else:
                 if line.startswith("## "):
                     sys.exit(0)
