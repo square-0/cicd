@@ -22,7 +22,7 @@ if len(sys.argv) < 2:
 
 
 with open("CHANGELOG.md", "r", encoding="utf-8") as all_handle:
-    with open("CHANGELOG-latest.md", "w", encoding="utf-8") as latest_handle:
+    with open("CHANGELOG-release.md", "w", encoding="utf-8") as latest_handle:
         echo_flag = False
 
         tag_prefix = "refs/tags/"
