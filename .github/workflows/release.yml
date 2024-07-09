@@ -32,10 +32,12 @@ jobs:
       - name: Delete assets
         run: |
           echo INFO: Deleting release assets...
-          gh release view ${{ github.ref }} --json assets --jq '.assets[].name' | \
+          gh release view "${{ github.ref }}" --json assets --jq '.assets[].name' | \
           while read -r line; do
-              gh release delete-asset ${{ github.ref }} "${line}" -y
+              gh release delete-asset "${{ github.ref }}" "${line}" -y
           done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   call-linux-x64:
     uses: ./.github/workflows/linux-x64.yml
