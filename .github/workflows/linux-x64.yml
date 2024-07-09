@@ -61,6 +61,7 @@ jobs:
         run: |
           pushd scripts
           ./linux-x64-setup.sh
+          ./linux-x64-lint.sh --no-format
           ./linux-x64-test.sh
           ./linux-x64-build.sh
           ./gettext-compile.sh
@@ -93,3 +94,13 @@ jobs:
           files: |
             release/proxygen-linux-x64-*.tgz*
             release/proxygen-linux-x64-*.deb*
+
+      - name: Upload as a release
+        if: ${{ inputs.target == 'release' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: CHANGELOG-latest.md
+          files: |
+            release/proxygen-linux-x64-*.tgz*
+            release/proxygen-linux-x64-*.deb*
+          fail_on_unmatched_files: true

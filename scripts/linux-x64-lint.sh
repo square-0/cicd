@@ -21,22 +21,31 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 1
+./scripts/linux-x64-precheck.sh || exit 500
 
 
 # Activate virtual environment.
 source venv/test/bin/activate
 
 
-# Code formatting.
-black --safe --line-length 120 src
+# Code analysis.
+if [ ! "$1" == "--no-format" ]; then
+    ruff format --line-length 120 src/ \
+        || (echo ERROR: Last command && exit 500)
+fi
 
+ruff check src/ \
+    || (echo ERROR: Last command && exit 500)
 
-# Code linting.
-# flake8
-# In flake8 we're able to specify
-# builtins = _
+mypy \
+    --strict \
+    --warn-unreachable \
+    --no-warn-return-any \
+    --pretty \
+    src/ \
+    || (echo ERROR: Last command && exit 500)
+    # --ignore-missing-imports \
 
 
 # Cleanup.
-popd
+popd > /dev/null

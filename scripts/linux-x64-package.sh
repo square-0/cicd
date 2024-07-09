@@ -21,7 +21,7 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 1
+./scripts/linux-x64-precheck.sh || exit 500
 
 
 # Activate virtual environment.
@@ -30,7 +30,8 @@ source venv/prod/bin/activate
 
 # Retrieve version number from the build.
 if [ ! -f dist/VERSION ]; then
-    exit 1
+    echo ERROR: No VERSION file found
+    exit 500
 fi
 PXG_VERSION=$(cat dist/VERSION)
 
@@ -53,10 +54,12 @@ cp dist/proxygen dist/tgz/Proxygen/bin
 cp packaging/linux-x64/os_*.sh dist/tgz/Proxygen/bin
 
 
-# Add executable support files.
-shopt -s globstar
-cp -r locales/**/*.mo dist/tgz/Proxygen
-shopt -u globstar
+# Add locales.
+find locales -iname \*.mo -print0 | \
+    xargs -0 -I SRC cp --parents SRC dist/tgz/Proxygen
+
+
+# Add icons.
 cp -r packaging/icons dist/tgz/Proxygen
 
 
@@ -166,4 +169,4 @@ popd
 
 
 # Cleanup.
-popd
+popd > /dev/null

@@ -25,9 +25,10 @@ find locales -name \*.po -execdir \
     sh -c \
     'msgfmt \
     "$0" \
-    --output-file "$(basename "$0" .po).mo"' \
+    --output-file "$(basename "$0" .po).mo" \
+    || (echo ERROR: Last command && exit 500)' \
     '{}' \;
 
 
 # Cleanup.
-popd
+popd > /dev/null

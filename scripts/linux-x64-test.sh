@@ -21,7 +21,7 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 1
+./scripts/linux-x64-precheck.sh || exit 500
 
 
 # Activate virtual environment.
@@ -32,8 +32,9 @@ source venv/test/bin/activate
 ${PXG_PY_CMD} -m unittest discover \
     --top-level-directory src \
     --start-directory src/tests \
-    --pattern *.py
+    --pattern *.py \
+    || (echo ERROR: Last command && exit 500)
 
 
 # Cleanup.
-popd
+popd > /dev/null

@@ -59,6 +59,13 @@ Poedit .PO file editor GUI
 
 [Block screen saver](https://stackoverflow.com/questions/63076389/python-prevent-the-screen-saver)
 
+## PyInstaller
+
+As noted in the CPython tutorial Appendix, for Windows a file extension of .pyw suppresses the console window that normally appears. Likewise, a console window will not be provided when using a myscript.pyw script with PyInstaller.
+
+noconsole before onefile:
+pyinstaller --noconsole --onefile --windowed --icon=favicon.ico main.py
+
 ## Making a release
 
 ### Update the changelog

@@ -37,6 +37,11 @@ sudo apt-get install -y \
     python3.12-tk \
     gettext \
     lintian
+if [ ! -v GITHUB_ACTIONS ]; then
+    sudo apt-get install -y \
+        git \
+        gh
+fi
 
 
 # Install Python dependencies.
@@ -58,9 +63,9 @@ ${PXG_PY_CMD} -m ensurepip --upgrade
 ${PXG_PY_CMD} -m pip install --upgrade pip
 ${PXG_PY_CMD} -m pip install -r src/requirements.txt
 ${PXG_PY_CMD} -m pip install \
-    black \
-    flake8
+    ruff \
+    mypy
 
 
 # Cleanup.
-popd
+popd > /dev/null

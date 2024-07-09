@@ -42,4 +42,4 @@ fi
 
 
 # Cleanup.
-popd
+popd > /dev/null

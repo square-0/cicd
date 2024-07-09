@@ -13,13 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import locale
 import gettext
 import decimal
 import datetime
 
 
-def pxg_set_locale(language: str=None) -> None:
+_pxg_translation: gettext.GNUTranslations | gettext.NullTranslations | None = None
+
+
+def i18n_set_locale(language: str | None = None) -> None:
     global _pxg_translation
 
     languages = [language] if language else None
@@ -30,26 +32,34 @@ def pxg_set_locale(language: str=None) -> None:
 
 
 def i18n_msg(msgid: str) -> str:
-    if '_pxg_translation' not in globals():
-        pxg_set_locale()
-
     global _pxg_translation
-    return _pxg_translation.gettext(msgid)
+
+    if not _pxg_translation:
+        i18n_set_locale()
+
+    if _pxg_translation:
+        return _pxg_translation.gettext(msgid)
+    else:
+        raise ValueError("Translation not found")
 
 
 def i18n_msgN(msgid1: str, msgidN: str, count: int) -> str:
-    if '_pxg_translation' not in globals():
-        pxg_set_locale()
-
     global _pxg_translation
-    return _pxg_translation.ngettext(msgid1, msgidN, count)
+
+    if not _pxg_translation:
+        i18n_set_locale()
+
+    if _pxg_translation:
+        return _pxg_translation.ngettext(msgid1, msgidN, count)
+    else:
+        raise ValueError("Translation not found")
 
 
-def i18n_int(number) -> str:
+def i18n_int(number: bool | int | float | decimal.Decimal | str) -> str:
     return "{0:n}".format(int(number))
 
 
-def i18n_dec(number) -> str:
+def i18n_dec(number: bool | int | float | decimal.Decimal | str) -> str:
     return "{0:n}".format(decimal.Decimal(number))
 
 

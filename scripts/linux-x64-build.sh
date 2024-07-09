@@ -21,7 +21,7 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 1
+./scripts/linux-x64-precheck.sh || exit 500
 
 
 # Activate virtual environment.
@@ -48,8 +48,9 @@ ${PXG_PY_CMD} -OO -m PyInstaller \
     --distpath dist \
     --noupx \
     --onefile \
-    src/proxygen.py
+    src/proxygen.py \
+    || (echo ERROR: Last command && exit 500)
 
 
 # Cleanup.
-popd
+popd > /dev/null

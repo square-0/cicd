@@ -9,8 +9,9 @@
 ## Build objectives
 
 - ❏ Coded with **Python**
-- ❏ Formatted with **black**
-- ❏ Linted with **flake8**
+- ❏ Formatted with **Ruff**
+- ❏ Linted with **Ruff**
+- ❏ Type checked with **Mypy**
 - ❏ Unit tested with **unittest**
 - ❏ I18N/L10N + plurals with **gettext**
 - ❏ Numbers/dates localized with **locale**
@@ -35,11 +36,12 @@
     - ❏ x64 universal build
     - ❏ ARM Apple Silicon
   - All
-    - ❏ SHA-256 file hashes
-- Desktop integration
-  - ❏ Menu item with icon
+    - ❏ SHA-256 hashes of assets
+- Operating system integration
+  - ❏ App menu item with icon
   - ❏ **SVG** and **PNG** icons for .pxg files
   - ❏ "Open with" association for .pxg files
+  - ❏ Proxygen executable in PATH, but not bundled FFmpeg
 - ❏ Build scripts with **bash**
 - ❏ Nightly and release builds with **GitHub Actions**
 

@@ -21,7 +21,7 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 1
+./scripts/linux-x64-precheck.sh || exit 500
 
 
 # Activate virtual environment.
@@ -29,8 +29,9 @@ source venv/test/bin/activate
 
 
 # Run Python script.
-${PXG_PY_CMD} scripts/cicd-changelog.py
+${PXG_PY_CMD} scripts/cicd-changelog.py \
+    || (echo ERROR: Last command && exit 500)
 
 
 # Cleanup.
-popd
+popd > /dev/null

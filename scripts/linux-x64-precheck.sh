@@ -23,9 +23,9 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 # Check that a Python interpreter is set.
 if [ ! -v PXG_PY_CMD ]; then
     echo ERROR: Environment variable PXG_PY_CMD was not set to an interpreter
-    exit 1
+    exit 500
 fi
 
 
 # Cleanup.
-popd
+popd > /dev/null

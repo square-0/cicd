@@ -15,14 +15,13 @@
 
 import sys
 
-from global_logs import *
-from global_i18n import *
+from global_i18n import i18n_msg, i18n_msgN, i18n_set_locale
 
 
 def main() -> int:
     """This is the main method."""
 
-    pxg_set_locale("es")
+    i18n_set_locale("es")
 
     print(i18n_msg("Hello, world!"))
 

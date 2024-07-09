@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Delete assets
         run: |
-          echo INFO: Deleting release assets...
+          echo INFO: Deleting pre-release assets...
           gh release view nightly --json assets --jq '.assets[].name' | \
           while read -r line; do
               gh release delete-asset nightly "${line}" -y

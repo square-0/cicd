@@ -22,7 +22,8 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 # Retrieve version number from the build.
 if [ ! -f dist/VERSION ]; then
-    exit 1
+    echo ERROR: No VERSION file found
+    exit 500
 fi
 PXG_VERSION=$(cat dist/VERSION)
 
@@ -42,18 +43,22 @@ xgettext \
     --keyword \
     --keyword=i18n_msg \
     --keyword=i18n_msgN:1,2 \
-    src/*.py
+    src/*.py \
+    || (echo ERROR: Last command && exit 500)
 
 
 # Merge new strings into existing .po files.
 find locales -name proxygen.po -exec \
-    msgmerge \
-    {} \
+    sh -c \
+    'msgmerge \
+    "$0" \
     locales/proxygen.pot \
     --width 72 \
     --update \
-    --backup none \;
+    --backup none \
+    || (echo ERROR: Last command && exit 500)' \
+    '{}' \;
 
 
 # Cleanup.
-popd
+popd > /dev/null
