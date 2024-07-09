@@ -16,13 +16,23 @@
 import sys
 
 
+if len(sys.argv) < 2:
+    print("ERROR: Tag name argument was not passed")
+    sys.exit(500)
+
+
 with open("CHANGELOG.md", "r", encoding="utf-8") as all_handle:
     with open("CHANGELOG-latest.md", "w", encoding="utf-8") as latest_handle:
-        h2_count = 0
+        version_header = f"## {sys.argv[1]}"
+        echo_flag = False
+
         for line in all_handle:
-            if line[0:3] == "## ":
-                h2_count += 1
-            if h2_count >= 2:
-                sys.exit(0)
+            if echo_flag == False:
+                if line.strip() == version_header:
+                    echo_flag = True
+                    next(all_handle)
             else:
-                latest_handle.write(line)
+                if line.startswith("## "):
+                    sys.exit(0)
+                else:
+                    latest_handle.write(line)

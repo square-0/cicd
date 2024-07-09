@@ -66,7 +66,7 @@ jobs:
           ./linux-x64-build.sh
           ./gettext-compile.sh
           ./linux-x64-package.sh
-          ./cicd-changelog.sh
+          ./cicd-changelog.sh "${{ github.ref_name }}"
           popd
 
           pushd release
@@ -99,6 +99,7 @@ jobs:
         if: ${{ inputs.target == 'release' }}
         uses: softprops/action-gh-release@v2
         with:
+          name: ${{ github.ref_name }}
           body_path: CHANGELOG-latest.md
           files: |
             release/proxygen-linux-x64-*.tgz*

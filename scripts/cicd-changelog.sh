@@ -29,7 +29,7 @@ source venv/test/bin/activate
 
 
 # Run Python script.
-${PXG_PY_CMD} scripts/cicd-changelog.py \
+${PXG_PY_CMD} scripts/cicd-changelog.py "$@" \
     || (echo ERROR: Last command && exit 500)
 
 
