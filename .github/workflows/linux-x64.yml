@@ -66,7 +66,7 @@ jobs:
           ./linux-x64-build.sh
           ./gettext-compile.sh
           ./linux-x64-package.sh
-          ./cicd-changelog.sh "${{ github.ref_name }}"
+          ./cicd-changelog.sh "${{ github.ref }}"
           popd
 
           pushd release

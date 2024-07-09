@@ -8,6 +8,6 @@ This is the latest stuff.
 
 Less good stuff.
 
-## nightly
+## vNext
 
 This is the nightly stuff.

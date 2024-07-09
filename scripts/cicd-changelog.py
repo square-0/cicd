@@ -23,8 +23,13 @@ if len(sys.argv) < 2:
 
 with open("CHANGELOG.md", "r", encoding="utf-8") as all_handle:
     with open("CHANGELOG-latest.md", "w", encoding="utf-8") as latest_handle:
-        version_header = f"## {sys.argv[1]}"
         echo_flag = False
+
+        tag_prefix = "refs/tags/"
+        if sys.argv[1].startswith(tag_prefix):
+            version_header = f"## {sys.argv[1][len(tag_prefix):]}"
+        else:
+            version_header = "## vNext"
 
         for line in all_handle:
             if echo_flag == False:
