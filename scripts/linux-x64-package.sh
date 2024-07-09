@@ -152,11 +152,13 @@ done
 # Switch to it when upgrading to Ubuntu 22.04+.
 mkdir -p release
 PXG_RELEASE=proxygen-linux-x64-${PXG_VERSION//./}.deb
-dpkg-deb --root-owner-group --build dist/deb release/${PXG_RELEASE}
+dpkg-deb --root-owner-group --build dist/deb release/${PXG_RELEASE} \
+    || (echo ERROR: Last command && exit 500)
 lintian \
     --info \
     -X debian/changelog,files/hierarchy-standard \
-    release/${PXG_RELEASE}
+    release/${PXG_RELEASE} \
+    || (echo ERROR: Last command && exit 500)
 
 
 # Generate checksums.
