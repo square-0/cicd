@@ -97,6 +97,8 @@ jobs:
             release/proxygen-linux-x64-*.tgz* \
             release/proxygen-linux-x64-*.deb* \
             || (echo ERROR: Last command && exit 500)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload as a release
         if: ${{ inputs.target == 'release' }}
