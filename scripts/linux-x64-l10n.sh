@@ -20,34 +20,14 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
-# Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 500
-
-
-# Activate virtual environment.
-source venv/test/bin/activate
-
-
-# Code analysis.
-if [ "$1" == "--format" ]; then
-    ruff format --line-length 120 src/ \
-        || (echo ERROR: Last command && exit 500)
-elif [ "$1" == "--check-format" ]; then
-    ruff format --line-length 120 --check src/ \
-        || (echo ERROR: Last command && exit 500)
-fi
-
-ruff check --no-fix --no-fix-only src/ \
-    || (echo ERROR: Last command && exit 500)
-
-mypy \
-    --strict \
-    --warn-unreachable \
-    --no-warn-return-any \
-    --pretty \
-    src/ \
-    || (echo ERROR: Last command && exit 500)
-    # --ignore-missing-imports \
+# Compile .po files into .mo files.
+find locales -name \*.po -execdir \
+    sh -c \
+    'msgfmt \
+    "$0" \
+    --output-file "$(basename "$0" .po).mo" \
+    || (echo ERROR: Last command && exit 500)' \
+    '{}' \;
 
 
 # Cleanup.
