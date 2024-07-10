@@ -92,7 +92,7 @@ jobs:
         run: |
           gh release create nightly \
             --title "Nightly build" \
-            --notes-file CHANGELOG-release.md \
+            --notes-file "release/CHANGELOG-release.md" \
             --prerelease \
             release/proxygen-linux-x64-*.tgz* \
             release/proxygen-linux-x64-*.deb* \

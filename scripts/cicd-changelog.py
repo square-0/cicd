@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from pathlib import Path
 import sys
 
 
@@ -21,8 +22,10 @@ if len(sys.argv) < 2:
     sys.exit(500)
 
 
+Path("release").mkdir(parents=True, exist_ok=True)
+
 with open("CHANGELOG.md", "r", encoding="utf-8") as all_handle:
-    with open("CHANGELOG-release.md", "w", encoding="utf-8") as latest_handle:
+    with open("release/CHANGELOG-release.md", "w", encoding="utf-8") as latest_handle:
         echo_flag = False
 
         vnext = "vNext"
