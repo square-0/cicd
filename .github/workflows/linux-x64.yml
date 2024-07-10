@@ -102,11 +102,13 @@ jobs:
 
       - name: Upload as a release
         if: ${{ inputs.target == 'release' }}
-        uses: softprops/action-gh-release@v2
-        with:
-          name: ${{ github.ref_name }}
-          body_path: CHANGELOG-release.md
-          files: |
-            release/proxygen-linux-x64-*.tgz*
-            release/proxygen-linux-x64-*.deb*
-          fail_on_unmatched_files: true
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --notes-file "release/CHANGELOG-release.md" \
+            --latest \
+            release/proxygen-linux-x64-*.tgz* \
+            release/proxygen-linux-x64-*.deb* \
+            || (echo ERROR: Last command && exit 500)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
