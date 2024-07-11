@@ -66,7 +66,6 @@ jobs:
           ./linux-x64-build.sh
           ./linux-x64-l10n.sh
           ./linux-x64-package.sh
-          ./cicd-changelog.sh "${{ github.ref }}"
           popd
 
           pushd release
@@ -90,12 +89,10 @@ jobs:
       - name: Upload as a pre-release
         if: ${{ inputs.target == 'nightly' }}
         run: |
-          gh release create nightly \
-            --title "Nightly build" \
-            --notes-file "release/CHANGELOG-release.md" \
-            --prerelease \
+          gh release upload nightly \
             release/proxygen-linux-x64-*.tgz* \
             release/proxygen-linux-x64-*.deb* \
+            --clobber \
             || (echo ERROR: Last command && exit 500)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -103,12 +100,10 @@ jobs:
       - name: Upload as a release
         if: ${{ inputs.target == 'release' }}
         run: |
-          gh release create "${{ github.ref_name }}" \
-            --title "${{ github.ref_name }}" \
-            --notes-file "release/CHANGELOG-release.md" \
-            --latest \
+          gh release upload "${{ github.ref_name }}" \
             release/proxygen-linux-x64-*.tgz* \
             release/proxygen-linux-x64-*.deb* \
+            --clobber \
             || (echo ERROR: Last command && exit 500)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

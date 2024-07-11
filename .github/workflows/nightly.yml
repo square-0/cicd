@@ -25,25 +25,35 @@ permissions:
   actions: write
 
 jobs:
-  delete-nightly-release:
+  prepare:
     runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Delete nightly release
+      - name: Prepare
         run: |
           echo INFO: Deleting nightly release...
           gh release view nightly \
-          || exit 0
-          gh release delete nightly --cleanup-tag -y \
-          || (echo ERROR: Last command && exit 500)
+          &&
+          (
+            gh release delete nightly --cleanup-tag -y \
+              || (echo ERROR: Last command && exit 500)
+          )
+
+          echo INFO: Creating nightly release...
+          ./scripts/cicd-changelog.sh refs/tags/nightly
+          gh release create nightly \
+            --title "Nightly build" \
+            --notes-file "release/CHANGELOG-release.md" \
+            --prerelease \
+            || (echo ERROR: Last command && exit 500)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   call-linux-x64:
-    needs: [delete-nightly-release]
+    needs: [prepare]
     uses: ./.github/workflows/linux-x64.yml
     secrets: inherit
     with:
