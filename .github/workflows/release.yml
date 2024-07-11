@@ -43,7 +43,8 @@ jobs:
             done
 
           echo INFO: Editing release details...
-          ./scripts/cicd-changelog.sh "${{ github.ref }}"
+          python scripts/cicd-changelog.py "${{ github.ref }}" \
+            || (echo ERROR: Last command && exit 500)
           gh release edit "${{ github.ref_name }}" \
             --title "${{ github.ref_name }}" \
             --notes-file "release/CHANGELOG-release.md" \
