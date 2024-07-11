@@ -43,7 +43,8 @@ jobs:
           )
 
           echo INFO: Creating nightly release...
-          ./scripts/cicd-changelog.sh refs/tags/nightly
+          python scripts/cicd-changelog.py refs/tags/nightly \
+            || (echo ERROR: Last command && exit 500)
           gh release create nightly \
             --title "Nightly build" \
             --notes-file "release/CHANGELOG-release.md" \
