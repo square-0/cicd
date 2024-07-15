@@ -35,14 +35,17 @@ jobs:
       - name: 'Prepare'
         run: |
           echo INFO: Checking for new commits since the last run...
+          # .[0].headSha would make the workflow see itself running on
+          # the default branch head, meaning always match $GITHUB_SHA.
           PXG_LAST_SHA=$( \
             gh run list \
               --workflow "${GITHUB_WORKFLOW}" \
-              --limit 1 \
+              --limit 2 \
               --json 'headSha' \
-              --jq '.[0].headSha' \
+              --jq '.[1].headSha' \
           )
-          echo ${PXG_LAST_SHA} , ${GITHUB_SHA}
+          echo Last commit SHA: ${PXG_LAST_SHA}
+          echo This commit SHA: ${GITHUB_SHA}
           if [ "${PXG_LAST_SHA}" == "${GITHUB_SHA}" ]; then
             echo INFO: No new commits since the last run. Cancelling workflow...
             gh run cancel ${{ github.run_id }}
