@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v4
 
-      - name: Prepare
+      - name: 'Prepare'
         run: |
           echo INFO: Checking for new commits since the last run...
           PXG_LAST_SHA=$( \
@@ -42,6 +42,7 @@ jobs:
               --json 'headSha' \
               --jq '.[0].headSha' \
           )
+          echo ${PXG_LAST_SHA} , ${GITHUB_SHA}
           if [ "${PXG_LAST_SHA}" == "${GITHUB_SHA}" ]; then
             echo INFO: No new commits since the last run. Cancelling workflow...
             gh run cancel ${{ github.run_id }}
