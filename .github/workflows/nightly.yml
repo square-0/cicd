@@ -34,22 +34,36 @@ jobs:
 
       - name: Prepare
         run: |
+          echo INFO: Checking for new commits since the last run...
+          PXG_LAST_SHA=$( \
+            gh run list \
+              --workflow "${GITHUB_WORKFLOW}" \
+              --limit 1 \
+              --json 'headSha' \
+              --jq '.[0].headSha' \
+          )
+          if [ "${PXG_LAST_SHA}" == "${GITHUB_SHA}" ]; then
+            echo INFO: No new commits since the last run. Cancelling workflow...
+            gh run cancel ${{ github.run_id }}
+            gh run watch ${{ github.run_id }} --interval 15
+          fi
+
           echo INFO: Deleting nightly release...
           gh release view nightly \
           &&
           (
             gh release delete nightly --cleanup-tag -y \
-              || (echo ERROR: Last command && exit 500)
+              || exit 99
           )
 
           echo INFO: Creating nightly release...
           python scripts/cicd-changelog.py refs/tags/nightly \
-            || (echo ERROR: Last command && exit 500)
+            || exit 99
           gh release create nightly \
             --title "Nightly build" \
             --notes-file "release/CHANGELOG-release.md" \
             --prerelease \
-            || (echo ERROR: Last command && exit 500)
+            || exit 99
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

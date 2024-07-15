@@ -18,8 +18,8 @@ import sys
 
 
 if len(sys.argv) < 2:
-    print("ERROR: Tag name argument was not passed")
-    sys.exit(500)
+    print("ERROR: Full tag name argument was not passed")
+    sys.exit(99)
 
 
 Path("release").mkdir(parents=True, exist_ok=True)

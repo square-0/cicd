@@ -39,10 +39,10 @@ jobs:
       actions: write
 
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v4
 
-      - name: Forced exit for forked repositories
+      - name: 'Forced exit for forked repositories'
         if: ${{ github.repository_owner != 'square-0' }}
         run: |
           echo ERROR: Repository is a fork. Cancelling workflow...
@@ -51,16 +51,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set environment variables
+      - name: 'Set environment variables'
         run: |
           pushd scripts
           ./linux-x64-env.sh
           popd
 
-      - name: Build and package
+      - name: 'Build and package'
         run: |
           pushd scripts
           ./linux-x64-setup.sh
+          ./linux-x64-comments.sh
           ./linux-x64-lint.sh --check-format
           ./linux-x64-test.sh
           ./linux-x64-build.sh
@@ -68,16 +69,16 @@ jobs:
           ./linux-x64-package.sh
           popd
 
+          echo INFO: Upload target is ${{ inputs.target }}
+          echo INFO: Tag ref is ${{ github.ref }}
+          echo INFO: Tag ref_name is ${{ github.ref_name }}
+
           pushd release
           echo INFO: Files in the release folder...
           ls -al
           popd
 
-          echo INFO: Upload target is ${{ inputs.target }}
-          echo INFO: Tag ref is ${{ github.ref }}
-          echo INFO: Tag ref_name is ${{ github.ref_name }}
-
-      - name: Upload as an artifact
+      - name: 'Upload as an artifact'
         if: ${{ inputs.target == 'artifact' }}
         uses: actions/upload-artifact@v4
         with:
@@ -86,24 +87,24 @@ jobs:
             release/proxygen-linux-x64-*.tgz*
             release/proxygen-linux-x64-*.deb*
 
-      - name: Upload as a pre-release
+      - name: 'Upload as a pre-release'
         if: ${{ inputs.target == 'nightly' }}
         run: |
           gh release upload nightly \
             release/proxygen-linux-x64-*.tgz* \
             release/proxygen-linux-x64-*.deb* \
             --clobber \
-            || (echo ERROR: Last command && exit 500)
+            || exit 99
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload as a release
+      - name: 'Upload as a release'
         if: ${{ inputs.target == 'release' }}
         run: |
           gh release upload "${{ github.ref_name }}" \
             release/proxygen-linux-x64-*.tgz* \
             release/proxygen-linux-x64-*.deb* \
             --clobber \
-            || (echo ERROR: Last command && exit 500)
+            || exit 99
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
