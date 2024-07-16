@@ -70,7 +70,8 @@ jobs:
           gh release create nightly \
             --title "Nightly build" \
             --notes-file "release/CHANGELOG-release.md" \
-            --prerelease \
+            --prerelease=true \
+            --draft=false \
             || exit 99
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
