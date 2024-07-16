@@ -35,21 +35,25 @@ jobs:
       - name: 'Prepare'
         run: |
           echo INFO: Checking for new commits since the last run...
-          # .[0].headSha would make the workflow see itself running on
-          # the default branch head, meaning always match $GITHUB_SHA.
-          PXG_LAST_SHA=$( \
+          # .[0].* would make the workflow see itself running on the
+          # default head, meaning it would always match $GITHUB_SHA.
+          mapfile -t -n 2 PXG_LAST_RUN < <( \
             gh run list \
               --workflow "${GITHUB_WORKFLOW}" \
               --limit 2 \
-              --json 'headSha' \
-              --jq '.[1].headSha' \
+              --json 'headSha,startedAt' \
+              --jq '.[1].headSha,.[1].startedAt' \
           )
-          echo Last commit SHA: ${PXG_LAST_SHA}
-          echo This commit SHA: ${GITHUB_SHA}
-          if [ "${PXG_LAST_SHA}" == "${GITHUB_SHA}" ]; then
-            echo INFO: No new commits since the last run. Cancelling workflow...
-            gh run cancel ${{ github.run_id }}
-            gh run watch ${{ github.run_id }} --interval 15
+          echo Last run commit SHA: ${PXG_LAST_RUN[0]}
+          echo This run commit SHA: ${GITHUB_SHA}
+          if [ "${PXG_LAST_RUN[0]}" == "${GITHUB_SHA}" ]; then
+            PXG_DATE_LAST=$(date --date "${PXG_LAST_RUN[1]}" +%s)
+            PXG_DATE_NOW=$(date --utc +%s)
+            if [ ${PXG_DATE_LAST} -lt ${PXG_DATE_NOW} - (60*60*24*7-1200) ]; then
+              echo INFO: No new commits since the last run. Cancelling workflow...
+              gh run cancel ${{ github.run_id }}
+              gh run watch ${{ github.run_id }} --interval 15
+            fi
           fi
 
           echo INFO: Deleting nightly release...
