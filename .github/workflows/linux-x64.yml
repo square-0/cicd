@@ -95,10 +95,6 @@ jobs:
             release/proxygen-linux-x64-*.deb* \
             --clobber \
             || exit 99
-          gh release edit nightly \
-            --prerelease=true \
-            --draft=fasle \
-            || exit 99
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
