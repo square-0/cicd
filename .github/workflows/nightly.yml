@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -47,10 +47,11 @@ jobs:
           echo Last run commit SHA: ${PXG_LAST_RUN[0]}
           echo This run commit SHA: ${GITHUB_SHA}
           if [ "${PXG_LAST_RUN[0]}" == "${GITHUB_SHA}" ]; then
+            echo INFO: Checking if existing nightly is recent...
             PXG_DATE_LAST=$(date --date "${PXG_LAST_RUN[1]}" +%s)
             PXG_DATE_NOW=$(date --utc +%s)
             if (( ${PXG_DATE_LAST} > ${PXG_DATE_NOW} - (60*60*24*7+1800) )); then
-              echo INFO: No new commits since the last run. Cancelling workflow...
+              echo INFO: No major changes since the last run. Cancelling workflow...
               gh run cancel ${{ github.run_id }}
               gh run watch ${{ github.run_id }} --interval 15
             fi
@@ -63,6 +64,17 @@ jobs:
             gh release delete nightly --cleanup-tag -y \
               || exit 99
           )
+
+          # Sleeping here because tag deletion is queued on GitHub's side.
+          # Suppose we create a new release before the tag is deleted.
+          # When tag deletion runs and sees a release against a tag
+          # that's being deleted, it sets the release to Draft.
+          # If we wait, the tag is first deleted, and we create an
+          # all-new release instead of creating a release on the
+          # old tag mere seconds before it was deleted.
+          # See:
+          # https://github.com/cli/cli/issues/8458#issuecomment-1854326401
+          sleep 15
 
           echo INFO: Creating nightly release...
           python scripts/cicd-changelog.py refs/tags/nightly \
