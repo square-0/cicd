@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,28 +28,32 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout
+      - name: 'Checkout'
         uses: actions/checkout@v4
 
-      - name: Prepare
+      - name: 'Prepare'
         run: |
           echo INFO: Deleting release assets...
           gh release view "${{ github.ref_name }}" \
             --json assets \
-            --jq '.assets[].name' | \
-            while read -r line; do
-                gh release delete-asset "${{ github.ref_name }}" "${line}" -y \
-                  || (echo ERROR: Last command && exit 500)
+            --jq '.assets[].name' \
+            | \
+            while read -r -t 30 line; do
+              gh release delete-asset -y \
+                "${{ github.ref_name }}" \
+                "${line}" \
+                || exit 99
             done
 
           echo INFO: Editing release details...
           python scripts/cicd-changelog.py "${{ github.ref }}" \
-            || (echo ERROR: Last command && exit 500)
+            || exit 99
           gh release edit "${{ github.ref_name }}" \
             --title "${{ github.ref_name }}" \
             --notes-file "release/CHANGELOG-release.md" \
-            --latest \
-            || (echo ERROR: Last command && exit 500)
+            --latest=true \
+            --draft=false \
+            || exit 99
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
