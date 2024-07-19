@@ -48,6 +48,7 @@ grep \
     --include .\* \
     --exclude-dir .git \
     --exclude \*.mo \
+    --exclude control \
     --exclude "$(basename "$0")" \
     --line-number \
     --recursive \

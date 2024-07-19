@@ -130,7 +130,7 @@ PXG_DEB_KB=$(du -s dist/deb | awk '{print $1;}')
 echo "Installed-Size: ${PXG_DEB_KB}" >> dist/deb/DEBIAN/control
 pushd dist/deb
     md5sum \
-        $(find * -type f -not -path 'DEBIAN/*') \
+        "$(find * -type f -not -path 'DEBIAN/*')" \
         > DEBIAN/md5sums
 popd
 for F in packaging/linux-x64/{pre,post}{inst,rm}; do
