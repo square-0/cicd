@@ -24,6 +24,11 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 ./scripts/linux-x64-sanity.sh || exit 99
 
 
+# Show unit test translations for verification.
+echo INFO: Unit test translations...
+grep "l10n unit test" locales/en_US/LC_MESSAGES/proxygen.po
+
+
 # Compile .po files into .mo files.
 find locales -name \*.po -execdir \
     sh -c \
@@ -32,6 +37,11 @@ find locales -name \*.po -execdir \
     --output-file "$(basename "$0" .po).mo" \
     || exit 99' \
     '{}' \;
+
+
+# List the .mo files that were compiled.
+echo INFO: Compiled .mo files...
+find locales -name \*.mo -print
 
 
 # Cleanup.

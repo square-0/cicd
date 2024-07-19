@@ -107,9 +107,9 @@ cat \
     > proxygen.tmp \
     || exit 99
 sed \
-    --expression 's/msgstr "l10n unit test 1"/msgstr "message"/' \
-    --expression 's/msgstr\[0] "l10n unit test 2"/msgstr[0] "singular"/' \
-    --expression 's/msgstr\[1] "l10n unit test 2"/msgstr[1] "plural"/' \
+    --expression 's/msgstr "l10n unit test 1"/msgstr "l10n unit test message"/' \
+    --expression 's/msgstr\[0] "l10n unit test 2"/msgstr[0] "l10n unit test singular"/' \
+    --expression 's/msgstr\[1] "l10n unit test 2"/msgstr[1] "l10n unit test plural"/' \
     --follow-symlinks \
     --in-place \
     proxygen.tmp \

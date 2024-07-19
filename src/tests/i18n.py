@@ -25,6 +25,7 @@ class TestMain(unittest.TestCase):
 
     def setUp(self) -> None:
         os.chdir("src")
+        print(os.getcwd())
 
     def tearDown(self) -> None:
         os.chdir("..")
@@ -32,9 +33,9 @@ class TestMain(unittest.TestCase):
 
     def test_mo_found(self) -> None:
         i18n_set_locale("en_US.UTF-8")
-        self.assertEqual(i18n_msg("l10n unit test 1"), "message", self.mo_msg)
-        self.assertEqual(i18n_msgN("l10n unit test 2", "l10n unit test 2", 1), "singular", self.mo_msg)
-        self.assertEqual(i18n_msgN("l10n unit test 2", "l10n unit test 2", 2), "plural", self.mo_msg)
+        self.assertEqual(i18n_msg("l10n unit test 1"), "l10n unit test message", self.mo_msg)
+        self.assertEqual(i18n_msgN("l10n unit test 2", "l10n unit test 2", 1), "l10n unit test singular", self.mo_msg)
+        self.assertEqual(i18n_msgN("l10n unit test 2", "l10n unit test 2", 2), "l10n unit test plural", self.mo_msg)
 
     def test_english(self) -> None:
         i18n_set_locale("en_US.UTF-8")
