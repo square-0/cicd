@@ -25,7 +25,6 @@ class TestMain(unittest.TestCase):
 
     def setUp(self) -> None:
         os.chdir("src")
-        print(os.getcwd())
 
     def tearDown(self) -> None:
         os.chdir("..")

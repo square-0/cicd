@@ -17,12 +17,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/tests/i18n.py:38
+#: src/tests/i18n.py:36
 msgid "l10n unit test 1"
-msgstr "message"
+msgstr "l10n unit test message"
 
-#: src/tests/i18n.py:39 src/tests/i18n.py:40
+#: src/tests/i18n.py:37 src/tests/i18n.py:38
 msgid "l10n unit test 2"
 msgid_plural "l10n unit test 2"
-msgstr[0] "singular"
-msgstr[1] "plural"
+msgstr[0] "l10n unit test singular"
+msgstr[1] "l10n unit test plural"
