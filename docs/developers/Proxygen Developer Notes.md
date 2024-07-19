@@ -51,6 +51,7 @@ env PYINSTALLER_COMPILE_BOOTLOADER
 [https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Translating-plural-forms.html]
 [https://translationproject.org/html/welcome.html]
 [https://stackoverflow.com/questions/14547631/python-locale-error-unsupported-locale-setting]
+[Turkey Test](https://stackoverflow.com/questions/40348174/should-i-use-python-casefold)
 
 Poedit .PO file editor GUI
 
@@ -66,16 +67,13 @@ As noted in the CPython tutorial Appendix, for Windows a file extension of .pyw 
 noconsole before onefile:
 pyinstaller --noconsole --onefile --windowed --icon=favicon.ico main.py
 
-## Making a release
+## Beta period indicators
 
-### Update the changelog
+```text
+![auto-commit-msg](https://img.shields.io/badge/dynamic/json?label=vscode&query=%24.engines.vscode&url=https%3A%2F%2Fraw.githubusercontent.com%2FMichaelCurrin%2Fauto-commit-msg%2Fmaster%2Fpackage.json)
 
-Entry types:
+[![OS - Linux](https://img.shields.io/badge/OS-Linux-blue?logo=linux&logoColor=white)](https://www.linux.org/ "Go to Linux homepage")
+```
 
-- **New:** A new feature or functionality
-- **Fixed:** Bug fix for unintentional problems
-- **Changed:** New behavior that affects a user's processes
-- **Improved:** Better or faster results using same processes
-- **Security:** Addresses a security or vulnerability issue
-- **Deprecated:** Warning that a feature will soon be removed
-- **Removed:** A feature is no longer available
+[https://github.com/MichaelCurrin/badge-generator/blob/master/README.md]
+

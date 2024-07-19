@@ -23,15 +23,12 @@ from i18n import i18n_set_locale, i18n_msg, i18n_msgN, i18n_xfrm
 class TestMain(unittest.TestCase):
     mo_msg: str = "Have .mo files been rebuilt lately? ./scripts/*-l10n"
 
-
     def setUp(self) -> None:
         os.chdir("src")
-
 
     def tearDown(self) -> None:
         os.chdir("..")
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
-
 
     def test_mo_found(self) -> None:
         i18n_set_locale("en_US.UTF-8")
@@ -39,11 +36,9 @@ class TestMain(unittest.TestCase):
         self.assertEqual(i18n_msgN("l10n unit test 2", "l10n unit test 2", 1), "singular", self.mo_msg)
         self.assertEqual(i18n_msgN("l10n unit test 2", "l10n unit test 2", 2), "plural", self.mo_msg)
 
-
     def test_english(self) -> None:
         i18n_set_locale("en_US.UTF-8")
         self.assertNotEqual(i18n_xfrm("LİMANI"), i18n_xfrm("limanı"))
-
 
     def test_turkic(self) -> None:
         i18n_set_locale("tr_TR.UTF-8")

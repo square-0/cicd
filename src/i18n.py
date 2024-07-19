@@ -29,6 +29,7 @@ https://www.gnu.org/software/gettext/manual/html_node/index.html
 
 # TODO: scan locale stdlib module for anything else to implement, esp string_format()
 
+
 @dataclass
 class _LocaleParts:
     """
@@ -63,9 +64,7 @@ def i18n_list_locales() -> list[str]: ...  # type: ignore[empty-body]
 
 
 def i18n_set_locale(locale_code: str | None = None) -> None:
-    """Sets the locale and translation for the entire app.
-
-    """
+    """Sets the locale and translation for the entire app."""
 
     global _i18n_translation
     global _i18n_rtl
@@ -73,7 +72,7 @@ def i18n_set_locale(locale_code: str | None = None) -> None:
 
     # Set app-wide locale.
     # TODO: set _i18n_locale_code and only check for it, assume the rest
-    if not set(['_i18n_translation', '_i18n_rtl', '_i18n_turkic']).issubset(set(globals())):
+    if not set(["_i18n_translation", "_i18n_rtl", "_i18n_turkic"]).issubset(set(globals())):
         _i18n_translation = None
         _i18n_rtl = None
         _i18n_turkic = None
