@@ -55,8 +55,8 @@ cp packaging/linux-x64/os_*.sh dist/tgz/Proxygen/bin
 
 
 # Add locales.
-find locales -name \*.mo -print0 | \
-    xargs -0 -I SRC cp --parents 'SRC' dist/tgz/Proxygen
+find locales -name \*.mo -print0 \
+    | xargs -0 -I SRC cp --parents 'SRC' dist/tgz/Proxygen
 
 
 # Add icons.
@@ -73,25 +73,25 @@ cp -r docs dist/tgz/Proxygen
 
 # Add code documentation.
 pushd src
-    find . -name \*.py -exec \
-        sh -c \
-        'mkdir -p "../dist/tgz/Proxygen/docs/modules/$(dirname "{}")"; \
-        "$0" -m pydoc \
-        "./$1" \
-        > "$2"' \
-        "${PXG_PY_CMD}" \
-        "{}" \
-        "../dist/tgz/Proxygen/docs/modules/{}.txt" \; \
-        || exit 99
-    find ../dist/tgz/Proxygen/docs/modules -name \*.txt -exec \
-        sed \
-        --regexp-extended \
-        --expression "1,2d" \
-        --expression "s|^(\s*)$(pwd)/|\1|" \
-        --follow-symlinks \
-        --in-place \
-        "{}" \; \
-        || exit 99
+find . -name \*.py -exec \
+    sh -c \
+    'mkdir -p "../dist/tgz/Proxygen/docs/modules/$(dirname "{}")"; \
+    "$0" -m pydoc \
+    "./$1" \
+    > "$2"' \
+    "${PXG_PY_CMD}" \
+    "{}" \
+    "../dist/tgz/Proxygen/docs/modules/{}.txt" \; \
+    || exit 99
+find ../dist/tgz/Proxygen/docs/modules -name \*.txt -exec \
+    sed \
+    --regexp-extended \
+    --expression "1,2d" \
+    --expression "s|^(\s*)$(pwd)/|\1|" \
+    --follow-symlinks \
+    --in-place \
+    "{}" \; \
+    || exit 99
 popd
 
 
@@ -129,9 +129,9 @@ echo "Version: ${PXG_VERSION}" >> dist/deb/DEBIAN/control
 PXG_DEB_KB=$(du -s dist/deb | awk '{print $1;}')
 echo "Installed-Size: ${PXG_DEB_KB}" >> dist/deb/DEBIAN/control
 pushd dist/deb
-    md5sum \
-        "$(find * -type f -not -path 'DEBIAN/*')" \
-        > DEBIAN/md5sums
+rm DEBIAN/md5sums
+find * -type f -not -path 'DEBIAN/*' -print0 \
+    | xargs -0 -I SRC md5sum --binary 'SRC' >> DEBIAN/md5sums
 popd
 for F in packaging/linux-x64/{pre,post}{inst,rm}; do
     [ -f "${F}" ] || continue
