@@ -131,7 +131,7 @@ echo "Installed-Size: ${PXG_DEB_KB}" >> dist/deb/DEBIAN/control
 pushd dist/deb
 rm DEBIAN/md5sums
 find * -type f -not -path 'DEBIAN/*' -print0 \
-    | xargs -0 -I SRC md5sum --binary 'SRC' >> DEBIAN/md5sums
+    | xargs -0 -I SRC md5sum 'SRC' >> DEBIAN/md5sums
 popd
 for F in packaging/linux-x64/{pre,post}{inst,rm}; do
     [ -f "${F}" ] || continue
