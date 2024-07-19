@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
-# Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 500
+# Run sanity checks.
+./scripts/linux-x64-sanity.sh || exit 99
 
 
 # Activate virtual environment.
@@ -30,15 +30,23 @@ source venv/test/bin/activate
 
 # Code analysis.
 if [ "$1" == "--format" ]; then
-    ruff format --line-length 120 src/ \
-        || (echo ERROR: Last command && exit 500)
+    ruff format \
+        --line-length 120 \
+        src/ \
+        || exit 99
 elif [ "$1" == "--check-format" ]; then
-    ruff format --line-length 120 --check src/ \
-        || (echo ERROR: Last command && exit 500)
+    ruff format \
+        --line-length 120 \
+        --check \
+        src/ \
+        || exit 99
 fi
 
-ruff check --no-fix --no-fix-only src/ \
-    || (echo ERROR: Last command && exit 500)
+ruff check \
+    --no-fix \
+    --no-fix-only \
+    src/ \
+    || exit 99
 
 mypy \
     --strict \
@@ -46,9 +54,9 @@ mypy \
     --no-warn-return-any \
     --pretty \
     src/ \
-    || (echo ERROR: Last command && exit 500)
-    # --ignore-missing-imports \
+    || exit 99
 
 
 # Cleanup.
 popd > /dev/null
+exit 0

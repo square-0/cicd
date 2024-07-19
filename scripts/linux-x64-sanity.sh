@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,12 +20,13 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
-# Check that a Python interpreter is set.
+# Verify that a Python interpreter is set.
 if [ ! -v PXG_PY_CMD ]; then
-    echo ERROR: Environment variable PXG_PY_CMD was not set to an interpreter
+    echo ERROR: Environment variable PXG_PY_CMD was not set to an interpreter.
     exit 99
 fi
 
 
 # Cleanup.
 popd > /dev/null
+exit 0

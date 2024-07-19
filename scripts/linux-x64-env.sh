@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,3 +43,4 @@ fi
 
 # Cleanup.
 popd > /dev/null
+exit 0

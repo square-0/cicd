@@ -18,7 +18,7 @@ import sys
 
 
 if len(sys.argv) < 2:
-    print("ERROR: Full tag name argument was not passed")
+    print("ERROR: Full tag name argument was not passed.")
     sys.exit(99)
 
 

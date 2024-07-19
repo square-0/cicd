@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,6 +20,10 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
+# Run sanity checks.
+./scripts/linux-x64-sanity.sh || exit 99
+
+
 # Install Linux dependencies.
 sudo apt-get update
 sudo apt-get install -y \
@@ -29,8 +33,8 @@ sudo add-apt-repository -y \
 sudo apt-get update
 sudo apt-get install -y \
     language-pack-en \
-    language-pack-es \
-    language-pack-nb \
+    language-pack-he \
+    language-pack-tr \
     python3.12 \
     python3.12-dev \
     python3.12-venv \
@@ -48,6 +52,7 @@ fi
 # Use a venv so that only required modules
 # make it into the PyInstaller executable
 # to reduce file size and attack surface.
+rm -fr venv
 
 # Production environment.
 ${PXG_PY_CMD} -m venv venv/prod
@@ -69,3 +74,4 @@ ${PXG_PY_CMD} -m pip install \
 
 # Cleanup.
 popd > /dev/null
+exit 0

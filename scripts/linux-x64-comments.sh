@@ -1,4 +1,6 @@
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+#!/usr/bin/env bash
+
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +20,10 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
+# Run sanity checks.
+./scripts/linux-x64-sanity.sh || exit 99
+
+
 # Scan all source code for FIXME comments.
 grep \
     --ignore-case \
@@ -29,9 +35,26 @@ grep \
     "FIXME" \
     src \
     scripts
-
 if [ $? -eq 0 ]; then
-    echo ERROR: Found FIXME source code comments that will prevent workflows from running.
+    echo ERROR: Found FIXME comments in source code.
+    exit 99
+fi
+
+
+# Scan everything for non-obfuscated email addresses.
+grep \
+    --ignore-case \
+    --include \* \
+    --include .\* \
+    --exclude-dir .git \
+    --exclude \*.mo \
+    --exclude "$(basename "$0")" \
+    --line-number \
+    --recursive \
+    "outlook\.com" \
+    .
+if [ $? -eq 0 ]; then
+    echo ERROR: Found email addresses without obfuscation.
     exit 99
 fi
 

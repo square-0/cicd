@@ -1,0 +1,33 @@
+# Use "language" or "language_REGION".
+# Do not include the encoding (.UTF-8, .ISO-*, etc).
+
+# "Turkic" in this context means unique casefolding
+# rules for uppercase "I" and uppercase dotted "I".
+
+az
+ba
+bak
+bgx
+clw
+crh
+cv
+gag
+kaa
+kaz
+kir
+kjh
+kk
+kmz
+ky
+qxq
+slr
+tat
+tk
+tr
+tt
+tuk
+tur
+tyv
+ug
+uz
+zkh

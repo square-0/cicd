@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
-# Run sanity pre-checks.
-./scripts/linux-x64-precheck.sh || exit 500
+# Run sanity checks.
+./scripts/linux-x64-sanity.sh || exit 99
 
 
 # Activate virtual environment.
@@ -29,12 +29,13 @@ source venv/test/bin/activate
 
 
 # Run all unit tests.
-${PXG_PY_CMD} -m unittest discover \
+"${PXG_PY_CMD}" -m unittest discover \
     --top-level-directory src \
     --start-directory src/tests \
     --pattern *.py \
-    || (echo ERROR: Last command && exit 500)
+    || exit 99
 
 
 # Cleanup.
 popd > /dev/null
+exit 0

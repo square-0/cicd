@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,15 +20,20 @@
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
+# Run sanity checks.
+./scripts/linux-x64-sanity.sh || exit 99
+
+
 # Compile .po files into .mo files.
 find locales -name \*.po -execdir \
     sh -c \
     'msgfmt \
     "$0" \
     --output-file "$(basename "$0" .po).mo" \
-    || (echo ERROR: Last command && exit 500)' \
+    || exit 99' \
     '{}' \;
 
 
 # Cleanup.
 popd > /dev/null
+exit 0

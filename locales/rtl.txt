@@ -1,0 +1,21 @@
+# Use "language" or "language_REGION".
+# Do not include the encoding (.UTF-8, .ISO-*, etc).
+
+ar
+arc
+az
+ckb
+dv
+fa
+ff
+he
+ks
+ku
+nqo
+pa
+pus
+rhg
+sd
+syr
+ug
+ur
