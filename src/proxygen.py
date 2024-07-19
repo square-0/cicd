@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,23 +15,9 @@
 
 import sys
 
-from global_i18n import i18n_msg, i18n_msgN, i18n_set_locale
-
 
 def main() -> int:
     """This is the main method."""
-
-    i18n_set_locale("es")
-
-    print(i18n_msg("Hello, world!"))
-
-    count = 1
-    msg = i18n_msgN("All {0} of you", "Oops, {0} of you", count)
-    print(msg.format(count))
-
-    count = 32
-    msg = i18n_msgN("All {0} of you", "Oops, {0} of you", count)
-    print(msg.format(count))
 
     return 0
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,14 +14,18 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
+import locale
+import os
 
-from global_i18n import i18n_msg
 import proxygen
 
 
 class TestMain(unittest.TestCase):
-    def test_translate(self) -> None:
-        self.assertEqual(i18n_msg(""), "")
+    def setUp(self) -> None:
+        os.chdir("src")
+
+    def tearDown(self) -> None:
+        os.chdir("..")
 
     def test_main(self) -> None:
         self.assertEqual(proxygen.main(), 0)

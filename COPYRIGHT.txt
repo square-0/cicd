@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Source: https://github.com/austincbrooks/proxygen
 Upstream-Name: Proxygen
-Upstream-Contact: Austin Brooks <ab.proxygen@outlook.com>
-Copyright: 2024, Austin Brooks <ab.proxygen@outlook.com>
+Upstream-Contact: Austin Brooks <ab.proxygen atSign outlook dt com>
+Copyright: 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
 License: GPL-3+
