@@ -77,3 +77,23 @@ pyinstaller --noconsole --onefile --windowed --icon=favicon.ico main.py
 
 [https://github.com/MichaelCurrin/badge-generator/blob/master/README.md]
 
+## Scan everything for non-obfuscated email addresses
+
+```bash
+grep \
+    --ignore-case \
+    --include \* \
+    --include .\* \
+    --exclude-dir .git \
+    --exclude \*.mo \
+    --exclude control \
+    --exclude "$(basename "$0")" \
+    --line-number \
+    --recursive \
+    "outlook\.com" \
+    .
+if [ $? -eq 0 ]; then
+    echo ERROR: Found email addresses without obfuscation.
+    exit 99
+fi
+```

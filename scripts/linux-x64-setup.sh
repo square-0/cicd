@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -55,19 +55,19 @@ fi
 rm -fr venv
 
 # Production environment.
-${PXG_PY_CMD} -m venv venv/prod
+"${PXG_PY_CMD}" -m venv venv/prod
 source venv/prod/bin/activate
-${PXG_PY_CMD} -m ensurepip --upgrade
-${PXG_PY_CMD} -m pip install --upgrade pip
-${PXG_PY_CMD} -m pip install -r src/requirements.txt
+"${PXG_PY_CMD}" -m ensurepip --upgrade
+"${PXG_PY_CMD}" -m pip install --upgrade pip
+"${PXG_PY_CMD}" -m pip install -r src/requirements.txt
 
 # Test environment.
-${PXG_PY_CMD} -m venv venv/test
+"${PXG_PY_CMD}" -m venv venv/test
 source venv/test/bin/activate
-${PXG_PY_CMD} -m ensurepip --upgrade
-${PXG_PY_CMD} -m pip install --upgrade pip
-${PXG_PY_CMD} -m pip install -r src/requirements.txt
-${PXG_PY_CMD} -m pip install \
+"${PXG_PY_CMD}" -m ensurepip --upgrade
+"${PXG_PY_CMD}" -m pip install --upgrade pip
+"${PXG_PY_CMD}" -m pip install -r src/requirements.txt
+"${PXG_PY_CMD}" -m pip install \
     ruff \
     mypy
 

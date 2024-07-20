@@ -9,17 +9,20 @@
 ## Code objectives
 
 - ❏ Coded with **Python**
-- ❏ Logged with **logging**
 - ❏ i18n/l10n with **gettext**
   - ❏ Plural forms
 - ❏ Locale-aware with **locale**
   - ❏ Dates
   - ❏ Numbers
-  - ❏ Currency
   - ❏ Sort order
-    - ❏ Passes the Turkey Test
-- ❏ CLI with **argparse**
-- ❏ GUI with **tkinter** and **CustomTkinter**
+    - ❏ Turkey Test
+- ❏ Logged with **logging**
+- ❏ CLI
+  - ❏ **argparse**
+- ❏ GUI
+  - ❏ **Pillow**
+  - ❏ **tkinter**
+  - ❏ **CustomTkinter**
 
 ## Build objectives
 
@@ -32,22 +35,19 @@
 - ❏ Static executable of **FFmpeg**
 - Documentation
   - ❏ User guides in **HTML**
-  - ❏ Python docstrings in **HTML**
   - ❏ Developer guides in **Markdown**
+  - ❏ Python docstrings using **pydoc**
 - Cross-platform support
   - Linux
     - ❏ x64
-    - ❏ ARM
     - ❏ Portable archive as **gzip'd tar**
     - ❏ Friendly installer as **deb package**
   - Windows
     - ❏ x64
-    - ❏ ARM
     - ❏ Portable archive as **zip**
     - ❏ Friendly installer using **Inno Setup**
   - macOS
-    - ❏ x64 universal build
-    - ❏ ARM Apple Silicon
+    - ❏ x64 universal build?
   - All
     - ❏ SHA-256 hashes of assets
 - Operating system integration
@@ -59,7 +59,7 @@
     - ❏ Don't put `bin` folder in PATH
     - ❏ Bundled FFmpeg should not mask system FFmpeg
 - ❏ Build scripts with **bash** or **batch**
-- ❏ CI/CD builds with **GitHub Actions**
+- ❏ Automated builds with **GitHub Actions**
   - ❏ Nightly
   - ❏ Release
 
@@ -79,3 +79,4 @@
 - ❏ Multi-node farm processing
 - Advanced features
   - ❏ Disable screen saver and sleep modes
+  - ❏ When done, sleep or power off computer

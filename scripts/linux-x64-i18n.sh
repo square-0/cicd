@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2024, Austin Brooks <ab.proxygen atSign outlook dt com>
+# Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,8 +45,8 @@ find src -name \*.py > build/pofiles.lst \
 xgettext \
     --package-name Proxygen \
     --package-version "${PXG_VERSION}" \
-    --copyright-holder "Austin Brooks <ab.proxygen atSign outlook dt com>" \
-    --msgid-bugs-address "Austin Brooks <ab.proxygen atSign outlook dt com>" \
+    --copyright-holder "Austin Brooks <ab.proxygen@outlook.com>" \
+    --msgid-bugs-address "Austin Brooks <ab.proxygen@outlook.com>" \
     --default-domain proxygen \
     --output locales/proxygen.pot \
     --width 72 \
@@ -96,7 +96,7 @@ if [ ! -f header.txt ]; then
     exit 99
 fi
 sed \
-    --expression '1,20d' \
+    --expression '1,19d' \
     --follow-symlinks \
     --in-place \
     proxygen.po \
