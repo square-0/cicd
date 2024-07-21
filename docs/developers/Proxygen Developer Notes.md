@@ -97,3 +97,7 @@ if [ $? -eq 0 ]; then
     exit 99
 fi
 ```
+
+## Random
+
+[Remove common leading whitespace from multi-line text](https://docs.python.org/3/library/textwrap.html#textwrap.dedent)

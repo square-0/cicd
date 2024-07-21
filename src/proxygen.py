@@ -13,12 +13,57 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from pathlib import Path
+import subprocess
 import sys
+import os
+
+
+def build_command(input: Path, output: Path, short_edge: int) -> list[str]:
+    # TODO: Add sharpen filter after downscale where
+    # amount depends on input/output size difference.
+
+    # fmt: off
+    return \
+    [
+        "ffmpeg",
+        "-i", str(input),
+        "-filter:v",
+        (
+            "zscale="
+                f"w=if(gt(iw\,ih)\,-2\,{short_edge}):"
+                f"h=if(gt(iw\,ih)\,{short_edge}\,-2):"
+                "filter=spline36:"
+                "dither=error_diffusion"
+        ),
+        "-c:V", "utvideo",
+        "-c:a", "pcm_s24le",
+        "-f", "matroska",
+        "-y",
+        str(output)
+    ]
+    # fmt: on
+
+
+def dir_walker(start_dir: Path) -> None:
+    for item in start_dir.iterdir():
+        if item.is_dir():
+            dir_walker(item)
+            continue
+        output = Path() / ".." / "timeline" / item
+        command = build_command(item, output, 360)
+        output.parent.mkdir(exist_ok=True)
+        subprocess.run(command)
+        print(command)
 
 
 def main() -> int:
     """This is the main method."""
 
+    Path("timeline").mkdir(exist_ok=True)
+    os.chdir("sources")
+    dir_walker(Path())
+    os.chdir("..")
     return 0
 
 

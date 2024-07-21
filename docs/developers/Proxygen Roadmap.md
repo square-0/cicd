@@ -73,6 +73,7 @@
   - ❏ Balanced
   - ❏ Fast encode time
   - ❏ Small file size
+- ❏ Gamma-aware scaling with [**zimg**](https://ffmpeg.org/ffmpeg-filters.html#zscale-1)
 
 ## Feature objectives
 
