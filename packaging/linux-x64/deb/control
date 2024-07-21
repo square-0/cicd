@@ -1,0 +1,13 @@
+Package: proxygen
+Section: video
+Priority: optional
+HomePage: https://github.com/austincbrooks/proxygen
+Maintainer: Austin Brooks <ab.proxygen@outlook.com>
+Architecture: amd64
+Depends: libc6 (>= 2.14), zlib1g (>= 1:1.1.4), xdg-utils (>= 1.1.3)
+Description: Media offloader and proxy generator for video editors
+ Proxygen makes media management easy:
+  - Offload files from cards and hard drives, with checksums and reports
+  - Create optimized media that fixes problems like variable frame rate
+  - Create proxies at a variety of resolutions and quality levels
+  - Create smaller versions of source files, suitable for archiving

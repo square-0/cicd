@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+cd /opt/Proxygen/bin
+./os_debian_register_system.sh
+

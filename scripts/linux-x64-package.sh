@@ -124,11 +124,11 @@ cp -r dist/tgz/Proxygen dist/deb/opt
 
 # Add control files for package.
 mkdir -p dist/deb/DEBIAN
-cp packaging/linux-x64/build/control dist/deb/DEBIAN
+cp packaging/linux-x64/deb/control dist/deb/DEBIAN
 echo "Version: ${PXG_VERSION}" >> dist/deb/DEBIAN/control
 PXG_DEB_KB=$(du -s dist/deb | awk '{print $1;}')
 echo "Installed-Size: ${PXG_DEB_KB}" >> dist/deb/DEBIAN/control
-for F in packaging/linux-x64/build/{pre,post}{inst,rm}; do
+for F in packaging/linux-x64/deb/{pre,post}{inst,rm}; do
     [ -f "${F}" ] || continue
     cp "${F}" dist/deb/DEBIAN
 done
