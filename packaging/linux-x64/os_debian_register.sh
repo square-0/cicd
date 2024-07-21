@@ -34,4 +34,7 @@ for F in packaging/icons/proxygen_*.png; do
         dist/deb/usr/share/icons/hicolor/${PXG_ICON_RES}/apps/proxygen.png
 done
 
+# Add to "PATH" (actually a /usr/bin script).
+
+
 exit 0
