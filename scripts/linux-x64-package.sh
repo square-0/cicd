@@ -51,7 +51,7 @@ cp CHANGELOG.md dist/tgz/Proxygen
 mkdir -p dist/tgz/Proxygen/bin
 cp dist/VERSION dist/tgz/Proxygen/bin
 cp dist/proxygen dist/tgz/Proxygen/bin
-cp packaging/linux-x64/os_*.sh dist/tgz/Proxygen/bin
+cp packaging/linux-x64/bin/* dist/tgz/Proxygen/bin
 
 
 # Add locales.
@@ -60,7 +60,7 @@ find locales -name \*.mo -print0 \
 
 
 # Add icons.
-cp -r packaging/icons dist/tgz/Proxygen
+cp -r icons dist/tgz/Proxygen
 
 
 # Add source code.
@@ -98,8 +98,8 @@ popd
 # Set file permissions.
 find dist/tgz/Proxygen -type d -exec chmod 0755 '{}' \;
 find dist/tgz/Proxygen -type f -exec chmod 0644 '{}' \;
-chmod 0755 dist/tgz/Proxygen/bin/proxygen
-chmod 0755 dist/tgz/Proxygen/bin/os_*.sh
+find dist/tgz/Proxygen/bin -type f -not -name VERSION -exec \
+    chmod 0755 '{}' \;
 
 
 # Make portable archive.
@@ -124,26 +124,29 @@ cp -r dist/tgz/Proxygen dist/deb/opt
 
 # Add control files for package.
 mkdir -p dist/deb/DEBIAN
-cp packaging/linux-x64/control dist/deb/DEBIAN
+cp packaging/linux-x64/build/control dist/deb/DEBIAN
 echo "Version: ${PXG_VERSION}" >> dist/deb/DEBIAN/control
 PXG_DEB_KB=$(du -s dist/deb | awk '{print $1;}')
 echo "Installed-Size: ${PXG_DEB_KB}" >> dist/deb/DEBIAN/control
-pushd dist/deb
-rm DEBIAN/md5sums
-find * -type f -not -path 'DEBIAN/*' -print0 \
-    | xargs -0 -I SRC md5sum 'SRC' >> DEBIAN/md5sums
-popd
-for F in packaging/linux-x64/{pre,post}{inst,rm}; do
+for F in packaging/linux-x64/build/{pre,post}{inst,rm}; do
     [ -f "${F}" ] || continue
     cp "${F}" dist/deb/DEBIAN
 done
 
 
+# Create checksums for package.
+pushd dist/deb
+rm DEBIAN/md5sums
+find * -type f -not -path 'DEBIAN/*' -print0 \
+    | xargs -0 -I SRC md5sum 'SRC' >> DEBIAN/md5sums
+popd
+
+
 # Set file permissions.
 find dist/deb -type d -exec chmod 0755 '{}' \;
 find dist/deb -type f -exec chmod 0644 '{}' \;
-chmod 0755 dist/deb/opt/Proxygen/bin/proxygen
-chmod 0755 dist/deb/opt/Proxygen/bin/os_*.sh
+find dist/deb/opt/Proxygen/bin -type f -not -name VERSION -exec \
+    chmod 0755 '{}' \;
 for F in dist/deb/DEBIAN/{pre,post}{inst,rm}; do
     [ -f "${F}" ] || continue
     chmod 0755 "${F}"
