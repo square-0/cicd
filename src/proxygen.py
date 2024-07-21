@@ -31,8 +31,8 @@ def build_command(input: Path, output: Path, short_edge: int) -> list[str]:
         "-filter:v",
         (
             "zscale="
-                f"w=if(gt(iw\,ih)\,-2\,{short_edge}):"
-                f"h=if(gt(iw\,ih)\,{short_edge}\,-2):"
+                f"w=if(gt(iw\\,ih)\\,-2\\,{short_edge}):"
+                f"h=if(gt(iw\\,ih)\\,{short_edge}\\,-2):"
                 "filter=spline36:"
                 "dither=error_diffusion"
         ),

@@ -140,7 +140,7 @@ done
 
 # Create checksums for package.
 pushd dist/deb
-rm DEBIAN/md5sums
+rm DEBIAN/md5sums || true
 find * -type f -not -path 'DEBIAN/*' -print0 \
     | xargs -0 -I SRC md5sum 'SRC' >> DEBIAN/md5sums
 popd

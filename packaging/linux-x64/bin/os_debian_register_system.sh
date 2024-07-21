@@ -16,12 +16,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# NOTE: This script expects to run as root/superuser.
 # NOTE: The portable archive version could be "installed" anywhere.
 #       Make sure all paths are relative to this script's location.
 
 
-# TODO: Exit if not running as root/superuser.
+# Exit if not running as root/superuser.
+if (($EUID)); then
+    echo ERROR: root/superuser is required to register system-wide.
+    exit 99
+fi
 
 
 # Set working directory to the installation root.
