@@ -64,14 +64,14 @@ gtk-update-icon-cache --force /usr/share/icons/hicolor
 # Make an "open with" association.
 xdg-mime install \
     --mode system \
-    etc/austincbrooks-pxg.xml
+    etc/debian/austincbrooks-pxg.xml
 update-mime-database /usr/share/mime
 
 
 # Add app menu item.
 xdg-desktop-menu install \
     --mode system \
-    etc/austincbrooks-proxygen.desktop
+    etc/debian/austincbrooks-proxygen.desktop
 update-desktop-database
 
 

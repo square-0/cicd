@@ -63,6 +63,10 @@ find locales -name \*.mo -print0 \
 cp -r icons dist/tgz/Proxygen
 
 
+# Add platform/architecture-dependent files.
+cp -r packaging/linux-x64/etc /dist/tgz/Proxygen
+
+
 # Add source code.
 cp -r src dist/tgz/Proxygen
 
