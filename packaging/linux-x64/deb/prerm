@@ -19,14 +19,12 @@
 set -e
 
 case "$1" in
-    configure)
+    remove | upgrade)
         cd /opt/Proxygen/bin
-        ./os_debian_register_system.sh
+        ./os_debian_unregister_system.sh
         ;;
 
     *)
-        cd /opt/Proxygen/bin
-        ./os_debian_unregister_system.sh
         ;;
 esac
 

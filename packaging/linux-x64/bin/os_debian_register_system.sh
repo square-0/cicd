@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Copyright (c) 2024, Austin Brooks <ab.proxygen@outlook.com>
 #
@@ -19,6 +19,9 @@
 # NOTE: This script expects to run as root/superuser.
 # NOTE: The portable archive version could be "installed" anywhere.
 #       Make sure all paths are relative to this script's location.
+
+
+# TODO: Exit if not running as root/superuser.
 
 
 # Set working directory to the installation root.
@@ -74,8 +77,8 @@ update-desktop-database
 
 # Add to "PATH" as a /usr/bin script.
 cat << EOF > /usr/bin/proxygen
-#!/usr/bin/env bash
-$(pwd)/bin/proxygen \$@
+#!/bin/bash
+"$(pwd)/bin/proxygen" "\$@"
 EOF
 chmod 0755 /usr/bin/proxygen
 
