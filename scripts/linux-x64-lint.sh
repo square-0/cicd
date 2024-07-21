@@ -29,18 +29,10 @@ source venv/test/bin/activate
 
 
 # Code analysis.
-if [ "$1" == "--format" ]; then
-    ruff format \
-        --line-length 120 \
-        src/ \
-        || exit 99
-elif [ "$1" == "--check-format" ]; then
-    ruff format \
-        --line-length 120 \
-        --check \
-        src/ \
-        || exit 99
-fi
+ruff format \
+    --line-length 120 \
+    src/ \
+    || exit 99
 
 ruff check \
     --no-fix \

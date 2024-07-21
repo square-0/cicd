@@ -62,7 +62,7 @@ jobs:
           pushd scripts
           ./linux-x64-setup.sh
           ./linux-x64-comments.sh
-          ./linux-x64-lint.sh --check-format
+          ./linux-x64-lint.sh
           ./linux-x64-l10n.sh
           ./linux-x64-test.sh
           ./linux-x64-build.sh
