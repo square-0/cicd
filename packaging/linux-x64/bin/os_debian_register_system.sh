@@ -37,12 +37,12 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
     && \
     cp \
         icons/proxygen.svg \
-        /usr/share/icons/hicolor/scalable/apps/proxygen.svg
+        /usr/share/icons/hicolor/scalable/apps/austincbrooks-proxygen.svg
 [ -d /usr/share/icons/hicolor/scalable/mimetypes ] \
     && \
     cp \
         icons/proxygen.svg \
-        /usr/share/icons/hicolor/scalable/mimetypes/proxygen.svg
+        /usr/share/icons/hicolor/scalable/mimetypes/austincbrooks-proxygen.svg
 for F in icons/proxygen-*.png; do
     [ -f "${F}" ] || continue
     PXG_ICON_RES=$(basename "${F/proxygen-/}" .png)
@@ -89,4 +89,3 @@ chmod 0755 /usr/bin/proxygen
 # Cleanup.
 popd > /dev/null
 exit 0
-
