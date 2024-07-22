@@ -1,1 +1,1 @@
-update-mime-database ~/.local/share/mime
+# update-mime-database ~/.local/share/mime
