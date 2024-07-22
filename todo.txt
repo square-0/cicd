@@ -1,0 +1,18 @@
+to do:
+add i18n tests
+set locale
+
+single vs double quotes used properly for ${} expansion
+all filenames wrapped with single quotes unless a ${} inside
+
+
+icons:
+http://www.freedesktop.org/wiki/Specifications/icon-theme-spec
+xdg-icon-resource
+xdg-mime
+is mime glob case-insensitive?
+xdg-desktop-icon for .desktop file
+add [ -f COPYING.txt ] || exit 99 to all scripts
+does every script work on re-run?
+/usr/bin/env bash to /bin/bash?
+

@@ -22,6 +22,9 @@ sudo dpkg -P proxygen
 
 [https://www.reddit.com/r/xfce/comments/13vl393/how_to_associate_open_with_programs_exactly_by/]
 [https://forums.debian.net/viewtopic.php?t=153472]
+[https://discourse.gnome.org/t/custom-icon-for-a-specific-file-type-in-nautilus-ubuntu-22-04-gnome-v42-9/21983]
+[https://specifications.freedesktop.org/shared-mime-info-spec/latest/ar01s02.html#idm45642370337760]
+[https://specifications.freedesktop.org/icon-theme-spec/icon-theme-spec-latest.html]
 
 ## Building PyInstaller to create PIE/ASLR executables
 
