@@ -52,7 +52,8 @@ popd \
 # FFmpeg
 wget \
     https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2 \
-    --output-document ffmpeg-snapshot.tar.bz2 && \
+    --output-document ffmpeg-snapshot.tar.bz2 \
+    --no-verbose && \
 tar -xjf ffmpeg-snapshot.tar.bz2 && \
 rm ffmpeg-snapshot.tar.bz2 \
     || exit 99
@@ -114,6 +115,8 @@ popd \
 # Build FFmpeg.
 # See: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 # Run `./configure --help` for a list of --enable-* flags.
+# Legal and license: https://www.ffmpeg.org/legal.html
+# Note: Never use the --enable-nonfree option.
 pushd downloads/ffmpeg && \
 PATH="$(readlink -f ../../dist):${PATH}" \
 PKG_CONFIG_PATH="$(readlink -f ../../build/lib/pkgconfig)" \
@@ -132,7 +135,6 @@ PKG_CONFIG_PATH="$(readlink -f ../../build/lib/pkgconfig)" \
     --enable-libmp3lame \
     --enable-libvorbis \
     --enable-libzimg \
-    --enable-nonfree \
     --disable-doc \
     --disable-ffplay && \
 PATH="$(readlink -f ../../dist):${PATH}" \
