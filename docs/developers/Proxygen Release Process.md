@@ -2,14 +2,19 @@
 
 ## Update dependencies
 
+- scripts/*-setup1
+  - scripts/*-env
+  - Linux packages
+
+- scripts/*-setup2
+  - FFmpeg
+
 - Python
   - Language version in `scripts/*-setup`
   - `PXG_PY_CMD` in `scripts/*-env`
 
 - PIP
   - `src/requirements.txt`
-
-- FFmpeg
 
 - Installers
   - Inno Setup
@@ -19,7 +24,7 @@
 - All "# FIXME:" issues fixed
 - All lint checks should pass
 - All unit tests should pass
-- All source code has copyright date updated to include current year
+- All source code and COPYRIGHT.txt has copyright date updated to include current year
 
 ## Check build logs for errors
 
