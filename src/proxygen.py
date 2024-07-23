@@ -21,13 +21,30 @@ import sys
 import os
 
 
+def find_exe_dir() -> Path:
+    """Returns the directory of the running executable."""
+
+    if getattr(sys, "frozen", False):
+        # Compressed executable, unpacked in /tmp.
+        exe_dir = Path(sys.executable).parent
+    else:
+        try:
+            # Non-interactive script runner.
+            exe_dir = Path(__file__).parent
+        except NameError:
+            # Interactive command window.
+            exe_dir = Path.cwd()
+
+    return exe_dir.resolve()
+
+
 def find_ffmpeg() -> str | None:
     if platform.system() == "Windows":
         ffmpeg = "ffmpeg.exe"
     else:
         ffmpeg = "ffmpeg"
 
-    exe_dir = Path(__file__).parent
+    exe_dir = find_exe_dir()
     print("exe_dir:", exe_dir)
 
     # Same-directory ffmpeg should always take precedence.
