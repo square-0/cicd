@@ -61,7 +61,7 @@ def build_utvideo_command(ffmpeg: str, input: Path, output: Path, short_edge: in
     [
         ffmpeg,
         "-i", str(input),
-        "-to", "00:00:01.000"
+        "-to", "00:00:01.000",
         "-filter:v",
         (
             "zscale="
