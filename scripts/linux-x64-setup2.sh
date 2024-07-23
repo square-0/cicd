@@ -129,6 +129,7 @@ PKG_CONFIG_PATH="$(readlink -f ../../build/lib/pkgconfig)" \
     --extra-libs="-lpthread -lm" \
     --ld="g++" \
     --enable-gpl \
+    --enable-version3 \
     --enable-gnutls \
     --enable-libass \
     --enable-libfreetype \
