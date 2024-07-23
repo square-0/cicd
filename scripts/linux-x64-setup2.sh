@@ -67,6 +67,14 @@ popd
 
 # Publish the source code per the license requirements.
 pushd downloads
+
+cat << EOF > "OTHER.txt"
+To get source code for compilation tools,
+operating system utilities, and other tools
+used here, please consult the Ubuntu package
+management repositories.
+EOF
+
 PXG_RELEASE=proxygen-linux-x64-source-$(date --utc "+%Y%m%d").tbz
 tar \
     --owner=0 \
@@ -75,6 +83,7 @@ tar \
     -cjf "../release/${PXG_RELEASE}" \
     . \
     || exit 99
+
 popd
 
 
@@ -115,8 +124,10 @@ popd \
 # Build FFmpeg.
 # See: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 # Run `./configure --help` for a list of --enable-* flags.
-# Legal and license: https://www.ffmpeg.org/legal.html
-# Note: Never use the --enable-nonfree option.
+# An `--enable-nonfree` binary cannot be distributed.
+# Legal and license:
+#   https://www.ffmpeg.org/legal.html
+#   https://ffmpeg.org/doxygen/trunk/md_LICENSE.html
 pushd downloads/ffmpeg && \
 PATH="$(readlink -f ../../dist):${PATH}" \
 PKG_CONFIG_PATH="$(readlink -f ../../build/lib/pkgconfig)" \
