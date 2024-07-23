@@ -28,19 +28,23 @@ def find_ffmpeg() -> str | None:
         ffmpeg = "ffmpeg"
 
     exe_dir = Path(__file__).parent
+    print("exe_dir:", exe_dir)
 
     # Same-directory ffmpeg should always take precedence.
     probe_file = (exe_dir / ffmpeg).resolve()
+    print("probe_file", probe_file)
     if probe_file.exists():
         return str(probe_file)
 
     # For running .py source code out of a portable archive.
     probe_file = (exe_dir / ".." / "bin" / ffmpeg).resolve()
+    print("probe_file", probe_file)
     if probe_file.exists():
         return str(probe_file)
 
     # For running .py source code out of a local dev repo.
     probe_file = (exe_dir / ".." / "dist" / ffmpeg).resolve()
+    print("probe_file", probe_file)
     if probe_file.exists():
         return str(probe_file)
 
@@ -57,6 +61,7 @@ def build_utvideo_command(ffmpeg: str, input: Path, output: Path, short_edge: in
     [
         ffmpeg,
         "-i", str(input),
+        "-to", "00:00:01.000"
         "-filter:v",
         (
             "zscale="
