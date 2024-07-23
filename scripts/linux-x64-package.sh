@@ -173,9 +173,13 @@ lintian \
 
 # Generate checksums.
 find release \
+    -mindepth 1 \
     -name \* \
     -not -name \*.sha256 \
-    -execdir sha256sum "{}" > "{}.sha256" \;
+    -exec \
+    sh -c \
+    'sha256sum "$0" > "$0.sha256"' \
+    '{}' \;
 
 
 # Cleanup.
