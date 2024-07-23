@@ -25,7 +25,7 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 
 
 # Create/clean the build environment.
-# Leave the dist area intact.
+# Leave the dist and release areas intact.
 mkdir -p downloads
 mkdir -p build
 mkdir -p dist
@@ -72,7 +72,10 @@ cat << EOF > "OTHER.txt"
 To get source code for compilation tools,
 operating system utilities, and other tools
 used here, please consult the Ubuntu package
-management repositories.
+management repositories. It is not practical
+to bundle source code for an entire GPLv3
+operating system when it is already widely
+available online, and as an ISO image.
 EOF
 
 PXG_RELEASE=proxygen-linux-x64-source-$(date --utc "+%Y%m%d").tbz
