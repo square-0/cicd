@@ -51,6 +51,8 @@ cp CHANGELOG.md dist/tgz/Proxygen
 mkdir -p dist/tgz/Proxygen/bin
 cp dist/VERSION dist/tgz/Proxygen/bin
 cp dist/proxygen dist/tgz/Proxygen/bin
+cp dist/ffmpeg dist/tgz/Proxygen/bin
+cp dist/ffprobe dist/tgz/Proxygen/bin
 cp packaging/linux-x64/bin/* dist/tgz/Proxygen/bin
 
 
@@ -63,7 +65,7 @@ find locales -name \*.mo -print0 \
 cp -r icons dist/tgz/Proxygen
 
 
-# Add platform/architecture-dependent files.
+# Add platform-dependent files.
 cp -r packaging/linux-x64/etc dist/tgz/Proxygen
 
 
@@ -108,7 +110,7 @@ find dist/tgz/Proxygen/bin -type f -not -name VERSION -exec \
 
 # Make portable archive.
 mkdir -p release
-PXG_RELEASE=proxygen-linux-x64-${PXG_VERSION//./}.tgz
+PXG_RELEASE=proxygen-linux-x64-portable-${PXG_VERSION//./}.tgz
 pushd dist/tgz
 tar --owner=0 --group=0 -czvf "../../release/${PXG_RELEASE}" Proxygen \
     || exit 99
@@ -162,7 +164,7 @@ done
 # -X files/hierarchy/standard
 # Switch to it when upgrading to Ubuntu 22.04+.
 mkdir -p release
-PXG_RELEASE=proxygen-linux-x64-${PXG_VERSION//./}.deb
+PXG_RELEASE=proxygen-linux-x64-setup-${PXG_VERSION//./}.deb
 dpkg-deb --root-owner-group --build dist/deb "release/${PXG_RELEASE}" \
     || exit 99
 lintian \
@@ -173,12 +175,10 @@ lintian \
 
 
 # Generate checksums.
-pushd release
-for F in *.tgz *.deb; do
-    [ -f "${F}" ] || continue
-    sha256sum --binary "${F}" > "${F}.sha256"
-done
-popd
+find release \
+    -name \* \
+    -not -name \*.sha256 \
+    -execdir sha256sum "{}" > "{}.sha256" \;
 
 
 # Cleanup.

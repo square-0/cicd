@@ -24,13 +24,45 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 ./scripts/linux-x64-sanity.sh || exit 99
 
 
-# Install Linux dependencies.
-sudo apt-get update
+# Install base dependencies.
+sudo apt-get update -qq
 sudo apt-get install -y \
     software-properties-common
 sudo add-apt-repository -y \
     ppa:deadsnakes/ppa
-sudo apt-get update
+sudo apt-get update -qq
+if [ ! -v GITHUB_ACTIONS ]; then
+    sudo apt-get install -y \
+        git \
+        gh
+fi
+
+
+# Install FFmpeg dependencies.
+# See: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
+sudo apt-get install -y \
+    autoconf \
+    automake \
+    build-essential \
+    cmake \
+    git-core \
+    libass-dev \
+    libfreetype6-dev \
+    libgnutls28-dev \
+    libmp3lame-dev \
+    libtool \
+    libunistring-dev \
+    libvorbis-dev \
+    meson \
+    ninja-build \
+    pkg-config \
+    texinfo \
+    wget \
+    yasm \
+    zlib1g-dev
+
+
+# Install Proxygen dependencies.
 sudo apt-get install -y \
     language-pack-en \
     language-pack-he \
@@ -41,18 +73,13 @@ sudo apt-get install -y \
     python3.12-tk \
     gettext \
     lintian
-if [ ! -v GITHUB_ACTIONS ]; then
-    sudo apt-get install -y \
-        git \
-        gh
-fi
 
 
 # Install Python dependencies.
 # Use a venv so that only required modules
 # make it into the PyInstaller executable
 # to reduce file size and attack surface.
-rm -fr venv
+rm -fr venv || true
 
 # Production environment.
 "${PXG_PY_CMD}" -m venv venv/prod

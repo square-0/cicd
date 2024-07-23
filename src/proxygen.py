@@ -15,18 +15,47 @@
 
 from pathlib import Path
 import subprocess
+import platform
+import shutil
 import sys
 import os
 
 
-def build_command(input: Path, output: Path, short_edge: int) -> list[str]:
+def find_ffmpeg() -> str | None:
+    if platform.system() == "Windows":
+        ffmpeg = "ffmpeg.exe"
+    else:
+        ffmpeg = "ffmpeg"
+
+    exe_dir = Path(__file__).parent
+
+    # Same-directory ffmpeg should always take precedence.
+    probe_file = (exe_dir / ffmpeg).resolve()
+    if probe_file.exists():
+        return str(probe_file)
+
+    # For running .py source code out of a portable archive.
+    probe_file = (exe_dir / ".." / "bin" / ffmpeg).resolve()
+    if probe_file.exists():
+        return str(probe_file)
+
+    # For running .py source code out of a local dev repo.
+    probe_file = (exe_dir / ".." / "dist" / ffmpeg).resolve()
+    if probe_file.exists():
+        return str(probe_file)
+
+    # Hunt for a system-wide ffmpeg in PATH.
+    return shutil.which(ffmpeg)
+
+
+def build_utvideo_command(ffmpeg: str, input: Path, output: Path, short_edge: int) -> list[str]:
     # TODO: Add sharpen filter after downscale where
     # amount depends on input/output size difference.
 
     # fmt: off
     return \
     [
-        "ffmpeg",
+        ffmpeg,
         "-i", str(input),
         "-filter:v",
         (
@@ -45,13 +74,13 @@ def build_command(input: Path, output: Path, short_edge: int) -> list[str]:
     # fmt: on
 
 
-def dir_walker(start_dir: Path) -> None:
+def dir_walker(start_dir: Path, ffmpeg: str) -> None:
     for item in start_dir.iterdir():
         if item.is_dir():
-            dir_walker(item)
+            dir_walker(item, ffmpeg)
             continue
         output = Path() / ".." / "timeline" / item
-        command = build_command(item, output, 360)
+        command = build_utvideo_command(ffmpeg, item, output, 360)
         output.parent.mkdir(exist_ok=True)
         subprocess.run(command)
         print(command)
@@ -60,9 +89,12 @@ def dir_walker(start_dir: Path) -> None:
 def main() -> int:
     """This is the main method."""
 
+    ffmpeg = find_ffmpeg()
+    if not ffmpeg:
+        return 1
     Path("timeline").mkdir(exist_ok=True)
     os.chdir("sources")
-    dir_walker(Path())
+    dir_walker(Path(), ffmpeg)
     os.chdir("..")
     return 0
 

@@ -60,7 +60,8 @@ jobs:
       - name: 'Build and package'
         run: |
           pushd scripts
-          ./linux-x64-setup.sh
+          ./linux-x64-setup1.sh
+          ./linux-x64-setup2.sh
           ./linux-x64-comments.sh
           ./linux-x64-lint.sh
           ./linux-x64-l10n.sh
@@ -83,16 +84,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: proxygen-linux-x64
-          path: |
-            release/proxygen-linux-x64-*.tgz*
-            release/proxygen-linux-x64-*.deb*
+          path: release/*
 
       - name: 'Upload as a pre-release'
         if: ${{ inputs.target == 'nightly' }}
         run: |
           gh release upload nightly \
-            release/proxygen-linux-x64-*.tgz* \
-            release/proxygen-linux-x64-*.deb* \
+            release/* \
             --clobber \
             || exit 99
         env:
@@ -102,8 +100,7 @@ jobs:
         if: ${{ inputs.target == 'release' }}
         run: |
           gh release upload "${{ github.ref_name }}" \
-            release/proxygen-linux-x64-*.tgz* \
-            release/proxygen-linux-x64-*.deb* \
+            release/* \
             --clobber \
             || exit 99
         env:

@@ -28,11 +28,11 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 source venv/prod/bin/activate
 
 
-# Clean the build environment.
+# Create/clean the build environment.
+# Leave the dist area intact.
 mkdir -p build
 mkdir -p dist
 find build -mindepth 1 -delete
-find dist -mindepth 1 -delete
 
 
 # Set the version number to the build date, not packaging date.
