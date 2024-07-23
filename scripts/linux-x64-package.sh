@@ -166,7 +166,7 @@ dpkg-deb --root-owner-group --build dist/deb "release/${PXG_RELEASE}" \
     || exit 99
 lintian \
     --info \
-    -X debian/changelog,files/hierarchy/standard \
+    -X debian/changelog,files/hierarchy/standard,libraries/embedded \
     "release/${PXG_RELEASE}" \
     || exit 99
 
