@@ -41,6 +41,7 @@ mkdir -p dist/tgz/Proxygen
 
 
 # Add root directory files.
+cp PROXYGEN.root dist/tgz/Proxygen
 cp COPYRIGHT.txt dist/tgz/Proxygen
 cp LICENSE.txt dist/tgz/Proxygen
 cp README.md dist/tgz/Proxygen
@@ -110,9 +111,9 @@ find dist/tgz/Proxygen/bin -type f -not -name VERSION -exec \
 
 # Make portable archive.
 mkdir -p release
-PXG_RELEASE=proxygen-linux-x64-portable-${PXG_VERSION//./}.tgz
+PXG_ARCHIVE=proxygen-linux-x64-portable-${PXG_VERSION//./}.tgz
 pushd dist/tgz
-tar --owner=0 --group=0 -czvf "../../release/${PXG_RELEASE}" Proxygen \
+tar --owner=0 --group=0 -czvf "../../release/${PXG_ARCHIVE}" Proxygen \
     || exit 99
 popd
 
@@ -161,13 +162,13 @@ done
 
 # Make deb package.
 mkdir -p release
-PXG_RELEASE=proxygen-linux-x64-setup-${PXG_VERSION//./}.deb
-dpkg-deb --root-owner-group --build dist/deb "release/${PXG_RELEASE}" \
+PXG_ARCHIVE=proxygen-linux-x64-setup-${PXG_VERSION//./}.deb
+dpkg-deb --root-owner-group --build dist/deb "release/${PXG_ARCHIVE}" \
     || exit 99
 lintian \
     --info \
     -X debian/changelog,files/hierarchy/standard,libraries/embedded \
-    "release/${PXG_RELEASE}" \
+    "release/${PXG_ARCHIVE}" \
     || exit 99
 
 

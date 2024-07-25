@@ -2,6 +2,12 @@
 
 ## Update dependencies
 
+- Any libraries added or deleted?
+  - Are the licenses compatible with GPLv3?
+  - Is the source code included in the source tarball?
+  - Are the library licenses added to `licenses/<library>`?
+  - Are the libraries referenced in the About string?
+
 - scripts/*-setup1
   - scripts/*-env
   - Linux packages

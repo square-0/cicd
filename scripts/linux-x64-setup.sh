@@ -24,58 +24,38 @@ pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
 ./scripts/linux-x64-sanity.sh || exit 99
 
 
-# Install base dependencies.
+# Install basic dependencies.
 sudo apt-get update -qq
 sudo apt-get install -y \
     software-properties-common
 sudo add-apt-repository -y \
     ppa:deadsnakes/ppa
 sudo apt-get update -qq
-if [ ! -v GITHUB_ACTIONS ]; then
+if [[ -z "${GITHUB_ACTIONS}" ]]; then
     sudo apt-get install -y \
         git \
         gh
 fi
 
 
-# Install FFmpeg dependencies.
-# See: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
+# Install Proxygen's Linux dependencies (to run).
 sudo apt-get install -y \
-    autoconf \
-    automake \
-    build-essential \
-    cmake \
-    git-core \
-    libass-dev \
-    libfreetype6-dev \
-    libgnutls28-dev \
-    libmp3lame-dev \
-    libtool \
-    libunistring-dev \
-    libvorbis-dev \
-    meson \
-    ninja-build \
-    pkg-config \
-    texinfo \
-    wget \
-    yasm \
-    zlib1g-dev
+    python3.12 \
+    python3.12-tk \
+    gettext
 
 
-# Install Proxygen dependencies.
+# Install Proxygen's Linux dependencies (to build).
 sudo apt-get install -y \
     language-pack-en \
     language-pack-he \
     language-pack-tr \
-    python3.12 \
     python3.12-dev \
     python3.12-venv \
-    python3.12-tk \
-    gettext \
     lintian
 
 
-# Install Python dependencies.
+# Install Proxygen's Python dependencies.
 # Use a venv so that only required modules
 # make it into the PyInstaller executable
 # to reduce file size and attack surface.

@@ -16,17 +16,26 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
-
-
-# Verify that a Python interpreter is set.
-if [ ! -v PXG_PY_CMD ]; then
-    echo ERROR: Environment variable PXG_PY_CMD was not set to an interpreter.
+# All scripts should start at Proxygen's root directory.
+if [ ! -f PROXYGEN.root ]; then
+    echo ERROR: Cannot find root directory
     exit 99
 fi
 
 
+# Verify that all expected environment variables are set.
+[[ "${PXG_ROOT}" ]] && \
+[[ "${PXG_SOURCE}" ]] && \
+[[ "${PXG_BUILD}" ]] && \
+[[ "${PXG_DIST}" ]] && \
+[[ "${PXG_RELEASE}" ]] && \
+[[ "${PXG_PY_CMD}" ]] \
+|| (
+    echo ERROR: A core environment variable was not set.
+    echo Did scripts/platform/env run?
+    exit 99
+)
+
+
 # Cleanup.
-popd > /dev/null
 exit 0

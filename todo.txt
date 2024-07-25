@@ -4,7 +4,12 @@ set locale
 
 single vs double quotes used properly for ${} expansion
 all filenames wrapped with single quotes unless a ${} inside
+use set -e instead of exit 99
 
+github pages: https://docs.github.com/en/pages
+
+path to frozen:
+https://stackoverflow.com/questions/404744/determining-application-path-in-a-python-exe-generated-by-pyinstaller
 
 icons:
 http://www.freedesktop.org/wiki/Specifications/icon-theme-spec
@@ -29,6 +34,16 @@ change linux-x64-ffmpeg to linux-x64-deps
 full ffmpeg legal compliance
 licenses for other projects in /licenses/app/license + about box
 
+audio resampling with sox?
+
+not just offload, but also sync to backups
+
+change release to prerelease,
+add a new release that copies prerelease assets to release;
+verifies that final version is same as what was tested (crowdstrike)
+
+add pre-commit hook that does linting checks
+
 GPL/LGPL:
 https://web.archive.org/web/20220712000832/http://answers.google.com/answers/threadview/id/439136.html
 https://softwareengineering.stackexchange.com/questions/86142/what-exactly-do-i-need-to-do-if-i-use-a-lgpl-licensed-library
@@ -36,6 +51,40 @@ https://softwareengineering.stackexchange.com/questions/86142/what-exactly-do-i-
 "Platform-dependent efficient copy operations" for offloading
 https://docs.python.org/3/library/shutil.html#platform-dependent-efficient-copy-operations
 
+
+dnxhr:
+https://dovidenko.com/2019/999/ffmpeg-dnxhd-dnxhr-mxf-proxies-and-optimized-media.html
+https://www.avid.com/de/alliance-partner-program/avid-dnxhr-and-dnxhd-codec-licensees
+
+sox:
+https://soundcheck-audio.blogspot.com/2011/04/resampling-if-you-cant-avoid-it.html
+https://hydrogenaud.io/index.php/topic,79106.0.html
+
+gamma aware:
+http://www.ericbrasseur.org/gamma.html?i=1
+https://photo.stackexchange.com/questions/7812/is-this-article-correct-about-gamma-error-in-picture-scaling-in-common-software
+
+shutil copy for offloading:
+https://github.com/python/cpython/issues/77852
+https://docs.python.org/3/library/shutil.html#platform-dependent-efficient-copy-operations
+
+vfx:
+https://trac.ffmpeg.org/wiki/Encode/VFX
+
+cross-compile ffmpeg on windows:
+https://trac.ffmpeg.org/wiki/CompilationGuide/CrossCompilingForWindows
+
+FFNx:
+https://github.com/julianxhokaxhiu/FFNx/issues/536
+https://jlongster.com/color-space-experiments
+
+workflow mods:
+upload as prerelease on v* tags; manually convert prerelase to release
+https://imlvts.github.io/clownstruck/
+https://www.spiceworks.com/tech/tech-general/news/falcon-sensor-product-update-creates-outages-microsoft-users-worldwide-analysis/
+
+bash:
+https://stackoverflow.com/questions/3869072/test-for-non-zero-length-string-in-bash-n-var-or-var
 
 ------------------------
 
@@ -265,3 +314,123 @@ External library support:
   --disable-vdpau          disable Nvidia Video Decode and Presentation API for Unix code [autodetect]
   --disable-videotoolbox   disable VideoToolbox code [autodetect]
   --disable-vulkan         disable Vulkan code [autodetect]
+
+-----------------
+
+from some static version:
+
+--prefix=/ffbuild/prefix
+--pkg-config-flags=--static
+--pkg-config=pkg-config
+--cross-prefix=x86_64-ffbuild-linux-gnu-
+--arch=x86_64
+--target-os=linux
+--enable-gpl
+--enable-version3
+--disable-debug
+--enable-iconv
+--enable-libxml2
+--enable-zlib
+--enable-libfreetype
+--enable-libfribidi
+--enable-gmp
+--enable-openssl
+--enable-lzma
+--enable-fontconfig
+--enable-libharfbuzz
+--enable-libvorbis
+--enable-opencl
+--enable-libpulse
+--enable-libvmaf
+--enable-libxcb
+--enable-xlib
+--enable-amf
+--enable-libaom
+--enable-libaribb24
+--enable-avisynth
+--enable-chromaprint
+--enable-libdav1d
+--enable-libdavs2
+--disable-libfdk-aac
+--enable-ffnvcodec
+--enable-cuda-llvm
+--enable-frei0r
+--enable-libgme
+--enable-libkvazaar
+--enable-libaribcaption
+--enable-libass
+--enable-libbluray
+--enable-libjxl
+--enable-libmp3lame
+--enable-libopus
+--enable-librist
+--enable-libssh
+--enable-libtheora
+--enable-libvpx
+--enable-libwebp
+--enable-lv2
+--enable-libvpl
+--enable-openal
+--enable-libopencore-amrnb
+--enable-libopencore-amrwb
+--enable-libopenh264
+--enable-libopenjpeg
+--enable-libopenmpt
+--enable-librav1e
+--enable-librubberband
+--disable-schannel
+--enable-sdl2
+--enable-libsoxr
+--enable-libsrt
+--enable-libsvtav1
+--enable-libtwolame
+--enable-libuavs3d
+--enable-libdrm
+--enable-vaapi
+--enable-libvidstab
+--enable-vulkan
+--enable-libshaderc
+--enable-libplacebo
+--enable-libx264
+--enable-libx265
+--enable-libxavs2
+--enable-libxvid
+--enable-libzimg
+--enable-libzvbi
+--extra-cflags=-DLIBTWOLAME_STATIC
+--extra-cxxflags=
+--extra-ldflags=-pthread
+--extra-ldexeflags=-pie
+--extra-libs='-ldl -lgomp'
+--extra-version=20240108
+
+
+other:
+./configure \
+      --prefix=${BUILD_DIR}/desktop/${ARCH} \
+      --extra-cflags="-I$HOME/ffmpeg_build/include" \
+      --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+      --enable-shared \
+      #--extra-cflags="-I/opt/intel/mediasdk/include" \
+      #--extra-ldflags="-L/opt/intel/mediasdk/lib" \
+      #--extra-ldflags="-L/opt/intel/mediasdk/plugins" \
+      --arch=${ARCH} \
+      --enable-libmfx \
+      --enable-vaapi \
+      --enable-opencl \
+      --disable-debug \
+      --enable-nvenc \
+      --enable-cuda \
+      --enable-cuvid \
+      #--enable-libvorbis \
+      --enable-libvpx \
+      --enable-libdrm \
+      --enable-gpl \
+      --enable-runtime-cpudetect \
+      --enable-libfdk-aac \
+      --enable-libx264 \
+      --enable-libx265 \
+      --enable-openssl \
+      --enable-pic \
+      --extra-libs="-lpthread -libm -libc -lz -ldl" \
+      --enable-nonfree

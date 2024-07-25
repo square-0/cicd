@@ -26,16 +26,19 @@ def find_exe_dir() -> Path:
 
     if getattr(sys, "frozen", False):
         # Compressed executable, unpacked in /tmp.
-        exe_dir = Path(sys.executable).parent
+        exe_dir = Path(sys.executable).parent.resolve()
     else:
         try:
             # Non-interactive script runner.
-            exe_dir = Path(__file__).parent
+            exe_dir = Path(__file__).parent.resolve()
         except NameError:
             # Interactive command window.
-            exe_dir = Path.cwd()
+            exe_dir = Path.cwd().resolve()
 
-    return exe_dir.resolve()
+    if (exe_dir.parent / "PROXYGEN.root").exists():
+        return exe_dir
+    else:
+        raise FileNotFoundError("Could not find root directory")
 
 
 def find_ffmpeg() -> str | None:
