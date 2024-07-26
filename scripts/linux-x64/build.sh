@@ -16,32 +16,36 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
+# Activate virtual environment.
+source venv/prod/bin/activate
 
 
-# Show unit test translations for verification.
-echo INFO: Unit test translations...
-grep "l10n unit test" locales/en_US/LC_MESSAGES/proxygen.po
+# Create/clean the build environment.
+rm -fr build
+mkdir -p build
+mkdir -p dist
 
 
-# Compile .po files into .mo files.
-find locales -name \*.po -execdir \
-    sh -c \
-    'msgfmt \
-    "$0" \
-    --output-file "$(basename "$0" .po).mo" \
-    || exit 99' \
-    '{}' \;
+# Set the version number to the build date, not packaging date.
+echo $(date --utc "+%Y.%m.%d") > dist/VERSION
 
 
-# List the .mo files that were compiled.
-echo INFO: Compiled .mo files...
-find locales -name \*.mo -print
+# Build executable.
+"${PXG_PY_CMD}" -OO -m PyInstaller \
+    --clean \
+    --noconfirm \
+    --specpath build \
+    --workpath build \
+    --distpath dist \
+    --noupx \
+    --onefile \
+    src/proxygen.py
 
 
 # Cleanup.

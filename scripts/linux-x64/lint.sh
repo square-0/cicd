@@ -16,24 +16,32 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
-
-
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
 # Activate virtual environment.
 source venv/test/bin/activate
 
 
-# Run all unit tests.
-"${PXG_PY_CMD}" -m unittest discover \
-    --top-level-directory src \
-    --start-directory src/tests \
-    --pattern *.py \
-    || exit 99
+# Code analysis.
+ruff format \
+    --line-length 120 \
+    src/
+
+ruff check \
+    --no-fix \
+    --no-fix-only \
+    src/
+
+mypy \
+    --strict \
+    --warn-unreachable \
+    --no-warn-return-any \
+    --pretty \
+    src/
 
 
 # Cleanup.

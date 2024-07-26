@@ -16,40 +16,27 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
-
-
-# Activate virtual environment.
-source venv/prod/bin/activate
-
-
-# Create/clean the build environment.
-# Leave the dist area intact.
-mkdir -p build
-mkdir -p dist
-find build -mindepth 1 -delete
-
-
-# Set the version number to the build date, not packaging date.
-echo $(date --utc "+%Y.%m.%d") > dist/VERSION
-
-
-# Build executable.
-"${PXG_PY_CMD}" -OO -m PyInstaller \
-    --clean \
-    --noconfirm \
-    --specpath build \
-    --workpath build \
-    --distpath dist \
-    --noupx \
-    --onefile \
-    src/proxygen.py \
-    || exit 99
+# Scan all source code for FIXME comments.
+grep \
+    --ignore-case \
+    --include \*.py \
+    --include \*.sh \
+    --exclude "$(basename "$0")" \
+    --line-number \
+    --recursive \
+    "FIXME" \
+    src \
+    scripts \
+&& (
+    echo ERROR: Found FIXME comments in source code.
+    exit 99
+)
 
 
 # Cleanup.

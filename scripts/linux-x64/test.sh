@@ -16,29 +16,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
+# Activate virtual environment.
+source venv/test/bin/activate
 
 
-# Scan all source code for FIXME comments.
-grep \
-    --ignore-case \
-    --include \*.py \
-    --include \*.sh \
-    --exclude "$(basename "$0")" \
-    --line-number \
-    --recursive \
-    "FIXME" \
-    src \
-    scripts
-if [ $? -eq 0 ]; then
-    echo ERROR: Found FIXME comments in source code.
-    exit 99
-fi
+# Run all unit tests.
+"${PXG_PY_CMD}" -m unittest discover \
+    --top-level-directory src \
+    --start-directory src/tests \
+    --pattern *.py
 
 
 # Cleanup.

@@ -60,10 +60,10 @@ _i18n_turkic: bool | None
 
 
 # TODO:
-def i18n_list_locales() -> list[str]: ...  # type: ignore[empty-body]
+def test_locale(locale_code: str) -> bool: ...  # type: ignore[empty-body]
 
 
-def i18n_set_locale(locale_code: str | None = None) -> None:
+def set_locale(locale_code: str | None = None) -> None:
     """Sets the locale and translation for the entire app."""
 
     global _i18n_translation
@@ -87,6 +87,7 @@ def i18n_set_locale(locale_code: str | None = None) -> None:
 
     locale_parts = _get_locale_parts(new_locale)
 
+    # TODO: accept root argument to make absolute path
     # Set the gettext translation.
     languages = [locale_parts.bcp47, locale_parts.language]
     _i18n_translation = gettext.translation("proxygen", "../locales", languages, fallback=True)
@@ -100,10 +101,10 @@ def i18n_set_locale(locale_code: str | None = None) -> None:
     _i18n_turkic = locale_parts.language in turkic_list
 
 
-def i18n_msg(msgid: str) -> str:
+def msg1(msgid: str) -> str:
     global _i18n_translation
 
-    i18n_set_locale()
+    set_locale()
 
     if _i18n_translation:
         # TODO: if rtl, reverse strings except {variable}
@@ -112,10 +113,10 @@ def i18n_msg(msgid: str) -> str:
         raise ValueError("Translation not found")
 
 
-def i18n_msgN(msgid1: str, msgidN: str, count: int) -> str:
+def msgN(msgid1: str, msgidN: str, count: int) -> str:
     global _i18n_translation
 
-    i18n_set_locale()
+    set_locale()
 
     if _i18n_translation:
         # TODO: if rtl, reverse strings except {variable}
@@ -124,34 +125,40 @@ def i18n_msgN(msgid1: str, msgidN: str, count: int) -> str:
         raise ValueError("Translation not found")
 
 
-def i18n_int(number: bool | int | float | decimal.Decimal | str) -> str:
+# TODO:
+def atoi(string: str) -> int: ...  # type: ignore[empty-body]
+
+
+# TODO:
+def atof(string: str) -> float: ...  # type: ignore[empty-body]
+
+
+def itoa(number: bool | int | float | decimal.Decimal) -> str:
     return "{0:n}".format(int(number))
 
 
-def i18n_dec(number: bool | int | float | decimal.Decimal | str, rounding: int | None = None) -> str:
+def ftoa(number: bool | int | float | decimal.Decimal, rounding: int | None = None) -> str:
     # TODO: support rounding
     return "{0:n}".format(decimal.Decimal(number))
 
 
-def i18n_date(dt: datetime.datetime) -> str:
+def date(dt: datetime.datetime) -> str:
     return dt.strftime("%x")
 
 
-def i18n_time(dt: datetime.datetime) -> str:
+def time(dt: datetime.datetime) -> str:
     return dt.strftime("%X")
 
 
-def i18n_local() -> str:
-    return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
+def now(utc: bool = False) -> str:
+    """The UTC format can be parsed by the GNU `date --date` command for log analysis."""
+    if utc:
+        return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    else:
+        return datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S%z")
 
 
-def i18n_utc() -> str:
-    """This format can be parsed by the GNU `date --date` command for log analysis."""
-
-    return datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
-def i18n_xfrm(string: str) -> str:
+def xfrm(string: str) -> str:
     """Casefolding for locale-aware comparison and sorting.
 
     Creates a key suitable for case-insensitive locale-aware
@@ -175,19 +182,19 @@ def i18n_xfrm(string: str) -> str:
     return new_string
 
 
-def i18n_sort(items: Iterable[str], reverse: bool = False) -> Iterable[str]:
+def sort(items: Iterable[str], reverse: bool = False) -> Iterable[str]:
     return sorted(items, key=locale.strxfrm, reverse=reverse)
 
 
-def i18n_isort(items: Iterable[str], reverse: bool = False) -> Iterable[str]:
-    items_ci = [i18n_xfrm(item) for item in items]
-    return i18n_sort(items_ci, reverse)
+def isort(items: Iterable[str], reverse: bool = False) -> Iterable[str]:
+    items_ci = [xfrm(item) for item in items]
+    return sort(items_ci, reverse)
 
 
-def i18n_ltr() -> bool:
+def ltr() -> bool:
     global _i18n_rtl
 
-    i18n_set_locale()
+    set_locale()
 
     if _i18n_rtl is None:
         raise ValueError("Language direction is unknown")
@@ -195,23 +202,15 @@ def i18n_ltr() -> bool:
     return not _i18n_rtl
 
 
-def i18n_rtl() -> bool:
+def rtl() -> bool:
     global _i18n_rtl
 
-    i18n_set_locale()
+    set_locale()
 
     if _i18n_rtl is None:
         raise ValueError("Language direction is unknown")
 
     return _i18n_rtl
-
-
-# TODO:
-def i18n_atoi(string: str) -> int: ...  # type: ignore[empty-body]
-
-
-# TODO:
-def i18n_atof(string: str) -> float: ...  # type: ignore[empty-body]
 
 
 ####  HELPERS  #########################################################

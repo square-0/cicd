@@ -22,7 +22,7 @@ if len(sys.argv) < 2:
     sys.exit(99)
 
 
-Path("release").mkdir(parents=True, exist_ok=True)
+Path("release").mkdir(exist_ok=True)
 
 with open("CHANGELOG.md", "r", encoding="utf-8") as all_handle:
     with open("release/CHANGELOG-release.md", "w", encoding="utf-8") as latest_handle:

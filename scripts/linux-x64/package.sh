@@ -16,12 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
-
-
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
 # Activate virtual environment.
@@ -82,14 +80,13 @@ cp -r docs dist/tgz/Proxygen
 pushd src
 find . -name \*.py -exec \
     sh -c \
-    'mkdir -p "../dist/tgz/Proxygen/docs/modules/$(dirname "{}")"; \
+    'mkdir -p "../dist/tgz/Proxygen/docs/modules/$(dirname '{}')"; \
     "$0" -m pydoc \
     "./$1" \
     > "$2"' \
     "${PXG_PY_CMD}" \
-    "{}" \
-    "../dist/tgz/Proxygen/docs/modules/{}.txt" \; \
-    || exit 99
+    '{}' \
+    '../dist/tgz/Proxygen/docs/modules/{}.txt' \;
 find ../dist/tgz/Proxygen/docs/modules -name \*.txt -exec \
     sed \
     --regexp-extended \
@@ -97,8 +94,7 @@ find ../dist/tgz/Proxygen/docs/modules -name \*.txt -exec \
     --expression "s|^(\s*)$(pwd)/|\1|" \
     --follow-symlinks \
     --in-place \
-    "{}" \; \
-    || exit 99
+    '{}' \;
 popd
 
 
@@ -111,10 +107,13 @@ find dist/tgz/Proxygen/bin -type f -not -name VERSION -exec \
 
 # Make portable archive.
 mkdir -p release
-PXG_ARCHIVE=proxygen-linux-x64-portable-${PXG_VERSION//./}.tgz
+PXG_ARCHIVE="proxygen-linux-x64-portable-${PXG_VERSION//./}.tgz"
 pushd dist/tgz
-tar --owner=0 --group=0 -czvf "../../release/${PXG_ARCHIVE}" Proxygen \
-    || exit 99
+tar \
+    --owner=0 \
+    --group=0 \
+    -czvf "../../release/${PXG_ARCHIVE}" \
+    Proxygen
 popd
 
 
@@ -162,14 +161,16 @@ done
 
 # Make deb package.
 mkdir -p release
-PXG_ARCHIVE=proxygen-linux-x64-setup-${PXG_VERSION//./}.deb
-dpkg-deb --root-owner-group --build dist/deb "release/${PXG_ARCHIVE}" \
-    || exit 99
+PXG_ARCHIVE="proxygen-linux-x64-setup-${PXG_VERSION//./}.deb"
+dpkg-deb \
+    --root-owner-group \
+    --build dist/deb \
+    "release/${PXG_ARCHIVE}"
+# TODO: remove "libraries/embedded" when all EXEs are PIE/PIC.
 lintian \
     --info \
     -X debian/changelog,files/hierarchy/standard,libraries/embedded \
-    "release/${PXG_ARCHIVE}" \
-    || exit 99
+    "release/${PXG_ARCHIVE}"
 
 
 # Generate checksums.

@@ -16,12 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
-
-
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
 # Retrieve version number from the build.
@@ -35,8 +33,7 @@ PXG_VERSION=$(cat dist/VERSION)
 # Create list of files to scan for translation.
 # xgettext can't scan subdirectories on its own.
 mkdir -p build
-find src -name \*.py > build/pofiles.lst \
-    || exit 99
+find src -name \*.py > build/pofiles.lst
 
 
 # Extract strings for translation into a fresh template.
@@ -52,16 +49,15 @@ xgettext \
     --width 72 \
     --language Python \
     --keyword \
-    --keyword=i18n_msg \
-    --keyword=i18n_msgN:1,2 \
+    --keyword=msg1 \
+    --keyword=msgN:1,2 \
     --force-po \
-    --files-from build/pofiles.lst \
-    || exit 99
+    --files-from build/pofiles.lst
 rm build/pofiles.lst
 
 
 # Remove the American English catalog.
-rm locales/en_US/LC_MESSAGES/proxygen.po
+rm locales/en_US/LC_MESSAGES/proxygen.po || true
 
 
 # Merge new strings into existing .po files.
@@ -73,8 +69,7 @@ find locales -name proxygen.po -exec \
     --width 72 \
     --update \
     --force-po \
-    --backup none \
-    || exit 99' \
+    --backup none' \
     '{}' \;
 
 
@@ -84,11 +79,10 @@ msgen \
     locales/proxygen.pot \
     --output-file locales/en_US/LC_MESSAGES/proxygen.po \
     --width 72 \
-    --force-po \
-    || exit 99
+    --force-po
 
 
-# On a known entry, change the translation to something new
+# On known entries, change the translation to something new
 # so that a unit test can verify the translation is loading.
 pushd locales/en_US/LC_MESSAGES
 if [ ! -f header.txt ]; then
@@ -99,23 +93,19 @@ sed \
     --expression '1,19d' \
     --follow-symlinks \
     --in-place \
-    proxygen.po \
-    || exit 99
+    proxygen.po
 cat \
     header.txt \
     proxygen.po \
-    > proxygen.tmp \
-    || exit 99
+    > proxygen.tmp
 sed \
     --expression 's/msgstr "l10n unit test 1"/msgstr "l10n unit test message"/' \
     --expression 's/msgstr\[0] "l10n unit test 2"/msgstr[0] "l10n unit test singular"/' \
     --expression 's/msgstr\[1] "l10n unit test 2"/msgstr[1] "l10n unit test plural"/' \
     --follow-symlinks \
     --in-place \
-    proxygen.tmp \
-    || exit 99
-mv proxygen.tmp proxygen.po \
-    || exit 99
+    proxygen.tmp
+mv proxygen.tmp proxygen.po
 popd
 
 

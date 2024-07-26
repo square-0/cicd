@@ -16,39 +16,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
+# All scripts should start in Proxygen's root directory.
+if [ ! -f PROXYGEN.root ]; then
+    echo ERROR: Cannot find root directory.
+    exit 99
+fi
 
 
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
+# Verify that all expected environment variables are set.
+[[ "${PXG_ROOT}" ]] && \
+[[ "${PXG_PY_CMD}" ]] \
+|| (
+    echo ERROR: A core environment variable was not set.
+    echo Did scripts/platform/env run?
+    exit 99
+)
 
 
-# Activate virtual environment.
-source venv/test/bin/activate
-
-
-# Code analysis.
-ruff format \
-    --line-length 120 \
-    src/ \
-    || exit 99
-
-ruff check \
-    --no-fix \
-    --no-fix-only \
-    src/ \
-    || exit 99
-
-mypy \
-    --strict \
-    --warn-unreachable \
-    --no-warn-return-any \
-    --pretty \
-    src/ \
-    || exit 99
-
-
-# Cleanup.
-popd > /dev/null
+# Success.
 exit 0

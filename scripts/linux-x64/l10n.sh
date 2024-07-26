@@ -16,26 +16,32 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# All scripts should start at Proxygen's root directory.
-if [ ! -f PROXYGEN.root ]; then
-    echo ERROR: Cannot find root directory
-    exit 99
-fi
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
-# Verify that all expected environment variables are set.
-[[ "${PXG_ROOT}" ]] && \
-[[ "${PXG_SOURCE}" ]] && \
-[[ "${PXG_BUILD}" ]] && \
-[[ "${PXG_DIST}" ]] && \
-[[ "${PXG_RELEASE}" ]] && \
-[[ "${PXG_PY_CMD}" ]] \
-|| (
-    echo ERROR: A core environment variable was not set.
-    echo Did scripts/platform/env run?
-    exit 99
-)
+# Show unit test translations for verification.
+echo INFO: Unit test translations...
+echo If none, did scripts/platform/i18n run first?
+grep "l10n unit test" locales/en_US/LC_MESSAGES/proxygen.po
+
+
+# Compile .po files into .mo files.
+find locales -name \*.po -execdir \
+    sh -c \
+    'msgfmt \
+    "$0" \
+    --output-file "$(basename "$0" .po).mo"' \
+    '{}' \;
+
+
+# List the .mo files that were compiled.
+echo INFO: Compiled .mo files...
+find locales -name \*.mo -print
 
 
 # Cleanup.
+popd > /dev/null
 exit 0

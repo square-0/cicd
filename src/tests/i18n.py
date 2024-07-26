@@ -17,11 +17,11 @@ import unittest
 import locale
 import os
 
-from i18n import i18n_set_locale, i18n_msg, i18n_msgN, i18n_xfrm
+import i18n
 
 
 class TestMain(unittest.TestCase):
-    mo_msg: str = "Have .mo files been rebuilt lately? ./scripts/*-l10n"
+    mo_msg: str = "Have .mo files been rebuilt lately? ./scripts/platform/l10n"
 
     def setUp(self) -> None:
         os.chdir("src")
@@ -31,18 +31,18 @@ class TestMain(unittest.TestCase):
         locale.setlocale(locale.LC_ALL, "en_US.UTF-8")
 
     def test_mo_found(self) -> None:
-        i18n_set_locale("en_US.UTF-8")
-        self.assertEqual(i18n_msg("l10n unit test 1"), "l10n unit test message", self.mo_msg)
-        self.assertEqual(i18n_msgN("l10n unit test 2", "l10n unit test 2", 1), "l10n unit test singular", self.mo_msg)
-        self.assertEqual(i18n_msgN("l10n unit test 2", "l10n unit test 2", 2), "l10n unit test plural", self.mo_msg)
+        i18n.set_locale("en_US.UTF-8")
+        self.assertEqual(i18n.msg1("l10n unit test 1"), "l10n unit test message", self.mo_msg)
+        self.assertEqual(i18n.msgN("l10n unit test 2", "l10n unit test 2", 1), "l10n unit test singular", self.mo_msg)
+        self.assertEqual(i18n.msgN("l10n unit test 2", "l10n unit test 2", 2), "l10n unit test plural", self.mo_msg)
 
     def test_english(self) -> None:
-        i18n_set_locale("en_US.UTF-8")
-        self.assertNotEqual(i18n_xfrm("LİMANI"), i18n_xfrm("limanı"))
+        i18n.set_locale("en_US.UTF-8")
+        self.assertNotEqual(i18n.xfrm("LİMANI"), i18n.xfrm("limanı"))
 
     def test_turkic(self) -> None:
-        i18n_set_locale("tr_TR.UTF-8")
-        self.assertEqual(i18n_xfrm("LİMANI"), i18n_xfrm("limanı"))
+        i18n.set_locale("tr_TR.UTF-8")
+        self.assertEqual(i18n.xfrm("LİMANI"), i18n.xfrm("limanı"))
 
 
 if __name__ == "__main__":

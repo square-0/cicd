@@ -77,7 +77,7 @@ jobs:
           sleep 15
 
           echo INFO: Creating nightly release...
-          python scripts/cicd-changelog.py refs/tags/nightly \
+          python scripts/changelog.py refs/tags/nightly \
             || exit 99
           gh release create nightly \
             --title "Nightly build" \

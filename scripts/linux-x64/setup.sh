@@ -16,12 +16,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
-
-
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
 # Install basic dependencies.
@@ -59,7 +57,7 @@ sudo apt-get install -y \
 # Use a venv so that only required modules
 # make it into the PyInstaller executable
 # to reduce file size and attack surface.
-rm -fr venv || true
+rm -fr venv
 
 # Production environment.
 "${PXG_PY_CMD}" -m venv venv/prod

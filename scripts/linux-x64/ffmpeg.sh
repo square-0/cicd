@@ -16,13 +16,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Set working directory to the local repo root.
-pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
+# Sanity checks.
+pushd "${PXG_ROOT}" > /dev/null
+./scripts/linux-x64/sanity.sh || exit 99
+set -e
 
 
-# Run sanity checks.
-./scripts/linux-x64-sanity.sh || exit 99
-set -x # TODO: -e
+# Cache the absolute paths needed by ninja/make.
+PXG_SOURCE="$(readlink -f downloads/src)"
+PXG_BUILD="$(readlink -f build)"
+PXG_DIST="$(readlink -f dist)"
+PXG_RELEASE="$(readlink -f release)"
 
 
 # Install FFmpeg dependencies.
@@ -48,7 +52,7 @@ fi
 
 
 # Create/clean the build environment.
-rm -fr "${PXG_BUILD}" || true
+rm -fr "${PXG_BUILD}"
 mkdir -p "${PXG_SOURCE}"
 mkdir -p "${PXG_BUILD}/lib/pkgconfig"
 mkdir -p "${PXG_DIST}"
@@ -60,7 +64,7 @@ mkdir -p "${PXG_RELEASE}"
 
 # nasm
 pushd "${PXG_SOURCE}"
-rm -fr nasm || true
+rm -fr nasm
 git clone https://github.com/netwide-assembler/nasm \
     --depth 1 \
     --recurse-submodules \
@@ -89,7 +93,7 @@ popd
 
 # lame
 pushd "${PXG_SOURCE}"
-rm -fr lame || true
+rm -fr lame
 svn checkout https://svn.code.sf.net/p/lame/svn/trunk/lame \
     --quiet
 cd lame
@@ -99,7 +103,7 @@ popd
 
 # opus
 pushd "${PXG_SOURCE}"
-rm -fr opus || true
+rm -fr opus
 git clone https://gitlab.xiph.org/xiph/opus \
     --depth 1 \
     --recurse-submodules \
@@ -112,7 +116,7 @@ popd
 
 # SVT-AV1
 pushd "${PXG_SOURCE}"
-rm -fr SVT-AV1 || true
+rm -fr SVT-AV1
 git clone https://gitlab.com/AOMediaCodec/SVT-AV1 \
     --depth 1 \
     --recurse-submodules \
@@ -125,7 +129,7 @@ popd
 
 # zimg
 pushd "${PXG_SOURCE}"
-rm -fr zimg || true
+rm -fr zimg
 git clone https://github.com/sekrit-twc/zimg \
     --depth 1 \
     --recurse-submodules \
@@ -138,7 +142,7 @@ popd
 
 # ffmpeg
 pushd "${PXG_SOURCE}"
-rm -fr ffmpeg || true
+rm -fr ffmpeg
 git clone https://github.com/ffmpeg/ffmpeg \
     --depth 1 \
     --recurse-submodules \
@@ -151,7 +155,7 @@ popd
 
 # Proxygen
 pushd "${PXG_SOURCE}"
-rm -fr proxygen || true
+rm -fr proxygen
 git clone https://github.com/austincbrooks/proxygen \
     --depth 1 \
     --recurse-submodules \
@@ -163,9 +167,9 @@ popd
 # Publish the source code per the license requirements.
 pushd "${PXG_SOURCE}"
 
-cat << EOF > "README.md"
+cat << 'EOF' > README.md
 A file called `PROXYGEN-SOURCE-MODS.diff`
-is in the root of each project to list any
+is in the root of each project to log any
 source code modifications made by Proxygen.
 
 To get source code for compilation tools,
@@ -177,7 +181,7 @@ operating system when it is already widely
 available online, and as an ISO image.
 EOF
 
-PXG_ARCHIVE=proxygen-linux-x64-source-$(date --utc "+%Y%m%d").tbz
+PXG_ARCHIVE=proxygen-source-$(date --utc "+%Y%m%d").tbz
 tar \
     --owner=0 \
     --group=0 \
