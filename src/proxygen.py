@@ -38,7 +38,7 @@ def find_exe_dir() -> Path:
     if (exe_dir.parent / "PROXYGEN.root").exists():
         return exe_dir
     else:
-        raise FileNotFoundError("Could not find root directory")
+        raise FileNotFoundError("Cannot find Proxygen root directory")
 
 
 def find_ffmpeg() -> str | None:

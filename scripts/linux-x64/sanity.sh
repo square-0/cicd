@@ -18,7 +18,7 @@
 
 # All scripts should start in Proxygen's root directory.
 if [ ! -f PROXYGEN.root ]; then
-    echo ERROR: Cannot find root directory.
+    echo ERROR: Cannot find Proxygen root directory.
     exit 99
 fi
 

@@ -19,7 +19,7 @@
 # Set working directory to the local repo root.
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../.." > /dev/null
 if [ ! -f PROXYGEN.root ]; then
-    echo ERROR: Cannot find root directory.
+    echo ERROR: Cannot find Proxygen root directory.
     exit 99
 fi
 set -xe
