@@ -35,6 +35,7 @@ PXG_VERSION=$(cat dist/VERSION)
 
 
 # Create staging directory for portable archive.
+rm -fr dist/tgz
 mkdir -p dist/tgz/Proxygen
 
 
@@ -118,6 +119,7 @@ popd
 
 
 # Create staging directory for deb package.
+rm -fr dist/deb
 mkdir -p dist/deb
 
 
