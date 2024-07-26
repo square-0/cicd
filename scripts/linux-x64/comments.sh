@@ -19,7 +19,7 @@
 # Sanity checks.
 pushd "${PXG_ROOT}" > /dev/null
 ./scripts/linux-x64/sanity.sh || exit 99
-set -e
+set -xe
 
 
 # Scan all source code for FIXME comments.

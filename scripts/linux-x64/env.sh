@@ -22,7 +22,7 @@ if [ ! -f PROXYGEN.root ]; then
     echo ERROR: Cannot find root directory.
     exit 99
 fi
-set -e
+set -xe
 
 
 # Make directories referenced by environment variables.
