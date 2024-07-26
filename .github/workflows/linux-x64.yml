@@ -47,7 +47,7 @@ jobs:
         run: |
           echo ERROR: Repository is a fork. Cancelling workflow...
           gh run cancel ${{ github.run_id }}
-          gh run watch ${{ github.run_id }} --interval 15
+          gh run watch ${{ github.run_id }} --interval 60
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
