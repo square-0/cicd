@@ -22,7 +22,15 @@ pushd "${PXG_ROOT}" > /dev/null
 set -xe
 
 
-# Cache the absolute paths needed by ninja/make.
+# Create/clean the build environment.
+rm -fr build
+mkdir -p downloads/src
+mkdir -p build/lib/pkgconfig
+mkdir -p dist
+mkdir -p release
+
+
+# Cache the absolute paths needed by make/ninja.
 PXG_SOURCE="$(readlink -f downloads/src)"
 PXG_BUILD="$(readlink -f build)"
 PXG_DIST="$(readlink -f dist)"
@@ -49,14 +57,6 @@ if [[ -z "${GITHUB_ACTIONS}" ]]; then
     sudo apt-get install -y \
         subversion
 fi
-
-
-# Create/clean the build environment.
-rm -fr "${PXG_BUILD}"
-mkdir -p "${PXG_SOURCE}"
-mkdir -p "${PXG_BUILD}/lib/pkgconfig"
-mkdir -p "${PXG_DIST}"
-mkdir -p "${PXG_RELEASE}"
 
 
 ### GET SOURCE CODE
