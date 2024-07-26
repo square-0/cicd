@@ -166,7 +166,6 @@ dpkg-deb \
     --root-owner-group \
     --build dist/deb \
     "release/${PXG_ARCHIVE}"
-# TODO: remove "libraries/embedded" when all EXEs are PIE/PIC.
 lintian \
     --info \
     -X debian/changelog,files/hierarchy/standard,libraries/embedded \

@@ -23,12 +23,12 @@ set -e
 
 
 # Install basic dependencies.
-sudo apt-get update -qq
+sudo apt-get update -qq || true
 sudo apt-get install -y \
     software-properties-common
 sudo add-apt-repository -y \
     ppa:deadsnakes/ppa
-sudo apt-get update -qq
+sudo apt-get update -qq || true
 if [[ -z "${GITHUB_ACTIONS}" ]]; then
     sudo apt-get install -y \
         git \
