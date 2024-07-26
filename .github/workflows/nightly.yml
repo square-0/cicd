@@ -32,9 +32,16 @@ jobs:
       - name: 'Checkout'
         uses: actions/checkout@v4
 
-      - name: 'Prepare'
+      - name: 'Run?'
         run: |
-          echo INFO: Checking for new commits since the last run...
+          set -e
+
+          # Run if manually triggered.
+          if [ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]; then
+            exit 0
+          fi
+
+          # Get details of previous run.
           # .[0].* would make the workflow see itself running on the
           # default head, meaning it would always match $GITHUB_SHA.
           mapfile -t -n 2 PXG_LAST_RUN < <( \
@@ -44,28 +51,40 @@ jobs:
               --json 'headSha,startedAt' \
               --jq '.[1].headSha,.[1].startedAt' \
           )
+
+          # Run if the last run isn't recent.
+          echo INFO: Checking if existing nightly is recent...
+          PXG_DATE_LAST=$(date --date "${PXG_LAST_RUN[1]}" +%s)
+          PXG_DATE_NOW=$(date --utc +%s)
+          if (( ${PXG_DATE_LAST} < ${PXG_DATE_NOW} - (60*60*24*7+1800) )); then
+            exit 0
+          fi
+
+          # Run if there is a new commit.
+          echo INFO: Checking for new commits since the last run...
           echo Last run commit SHA: ${PXG_LAST_RUN[0]}
           echo This run commit SHA: ${GITHUB_SHA}
-          if [ "${PXG_LAST_RUN[0]}" == "${GITHUB_SHA}" ]; then
-            echo INFO: Checking if existing nightly is recent...
-            PXG_DATE_LAST=$(date --date "${PXG_LAST_RUN[1]}" +%s)
-            PXG_DATE_NOW=$(date --utc +%s)
-            if (( ${PXG_DATE_LAST} > ${PXG_DATE_NOW} - (60*60*24*7+1800) )); then
-              if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
-                echo INFO: No major changes since the last run. Cancelling workflow...
-                gh run cancel ${{ github.run_id }}
-                gh run watch ${{ github.run_id }} --interval 15
-              fi
-            fi
+          if [ "${PXG_LAST_RUN[0]}" != "${GITHUB_SHA}" ]; then
+            exit 0
           fi
+
+          # Cancel; no reason to run.
+          echo INFO: No major changes since the last run. Cancelling workflow...
+          gh run cancel ${{ github.run_id }}
+          gh run watch ${{ github.run_id }} --interval 60
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 'Prepare'
+        run: |
+          set -e
 
           echo INFO: Deleting nightly release...
           gh release view nightly \
-          &&
-          (
-            gh release delete nightly --cleanup-tag -y \
-              || exit 99
-          )
+          && \
+          gh release delete nightly --cleanup-tag -y \
+          || \
+          true
 
           # Sleeping here because tag deletion is queued on GitHub's side.
           # Suppose we create a new release before the tag is deleted.
@@ -79,14 +98,12 @@ jobs:
           sleep 15
 
           echo INFO: Creating nightly release...
-          python scripts/changelog.py refs/tags/nightly \
-            || exit 99
+          python scripts/changelog.py refs/tags/nightly
           gh release create nightly \
             --title "Nightly build" \
             --notes-file "release/CHANGELOG-release.md" \
             --prerelease=true \
-            --draft=false \
-            || exit 99
+            --draft=false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
