@@ -21,7 +21,7 @@
 
 
 # Exit if not running as root/superuser.
-if (($EUID)); then
+if (( $EUID != 0 )); then
     echo ERROR: root/superuser is required to register system-wide.
     exit 99
 fi
@@ -29,20 +29,25 @@ fi
 
 # Set working directory to the installation root.
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
-[ -f LICENSE.txt ] || exit 99
+if [ ! -f PROXYGEN.root ]; then
+    echo ERROR: Cannot find root directory.
+    exit 99
+fi
 
 
-# Add system icons.
+# Add a MIME type for "open with" association.
+xdg-mime install \
+    --mode system \
+    etc/debian/austincbrooks-pxg.xml
+update-mime-database /usr/share/mime
+
+
+# Add menu item icons.
 [ -d /usr/share/icons/hicolor/scalable/apps ] \
-    && \
-    cp \
-        icons/proxygen.svg \
-        /usr/share/icons/hicolor/scalable/apps/austincbrooks-proxygen.svg
-[ -d /usr/share/icons/hicolor/scalable/mimetypes ] \
-    && \
-    cp \
-        icons/proxygen.svg \
-        /usr/share/icons/hicolor/scalable/mimetypes/austincbrooks-proxygen.svg
+&& \
+cp \
+    icons/proxygen.svg \
+    /usr/share/icons/hicolor/scalable/apps/austincbrooks-proxygen.svg
 for F in icons/proxygen-*.png; do
     [ -f "${F}" ] || continue
     PXG_ICON_RES=$(basename "${F/proxygen-/}" .png)
@@ -53,6 +58,18 @@ for F in icons/proxygen-*.png; do
         "${F}" \
         austincbrooks-proxygen \
         --noupdate
+done
+
+
+# Add MIME type icons.
+[ -d /usr/share/icons/hicolor/scalable/mimetypes ] \
+&& \
+cp \
+    icons/mimetype.svg \
+    /usr/share/icons/hicolor/scalable/mimetypes/austincbrooks-proxygen.svg
+for F in icons/mimetype-*.png; do
+    [ -f "${F}" ] || continue
+    PXG_ICON_RES=$(basename "${F/mimetype-/}" .png)
     xdg-icon-resource install \
         --mode system \
         --context mimetypes \
@@ -64,21 +81,20 @@ done
 gtk-update-icon-cache --force /usr/share/icons/hicolor
 
 
-# Make an "open with" association.
-xdg-mime install \
-    --mode system \
-    etc/debian/austincbrooks-pxg.xml
-update-mime-database /usr/share/mime
-
-
 # Add app menu item.
+sed \
+    --expression "s|Exec=.*|Exec=\"$(pwd)/bin/proxygen\" \"%f\"|g" \
+    --follow-symlinks \
+    etc/debian/austincbrooks-proxygen.desktop \
+    > /tmp/austincbrooks-proxygen.desktop
 xdg-desktop-menu install \
     --mode system \
-    etc/debian/austincbrooks-proxygen.desktop
+    /tmp/austincbrooks-proxygen.desktop
+rm /tmp/austincbrooks-proxygen.desktop || true
 update-desktop-database
 
 
-# Add to "PATH" as a /usr/bin script.
+# Add to "PATH" as a redirection script.
 cat << EOF > /usr/bin/proxygen
 #!/bin/bash
 "$(pwd)/bin/proxygen" "\$@"

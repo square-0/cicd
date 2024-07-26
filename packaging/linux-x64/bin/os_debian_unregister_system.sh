@@ -21,7 +21,7 @@
 
 
 # Exit if not running as root/superuser.
-if (($EUID)); then
+if (( $EUID != 0 )); then
     echo ERROR: root/superuser is required to unregister system-wide.
     exit 99
 fi
@@ -29,14 +29,27 @@ fi
 
 # Set working directory to the installation root.
 pushd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." > /dev/null
-[ -f LICENSE.txt ] || exit 99
+if [ ! -f PROXYGEN.root ]; then
+    echo ERROR: Cannot find root directory.
+    exit 99
+fi
 
 
-# Remove system icons.
-[ -f /usr/share/icons/hicolor/scalable/apps/austincbrooks-proxygen.svg ] \
-    && rm /usr/share/icons/hicolor/scalable/apps/austincbrooks-proxygen.svg
-[ -f /usr/share/icons/hicolor/scalable/mimetypes/austincbrooks-proxygen.svg ] \
-    && rm /usr/share/icons/hicolor/scalable/mimetypes/austincbrooks-proxygen.svg
+# Remove app menu item.
+sed \
+    --expression "s|Exec=.*|Exec=\"$(pwd)/bin/proxygen\" \"%f\"|g" \
+    --follow-symlinks \
+    etc/debian/austincbrooks-proxygen.desktop \
+    > /tmp/austincbrooks-proxygen.desktop
+xdg-desktop-menu uninstall \
+    --mode system \
+    /tmp/austincbrooks-proxygen.desktop
+rm /tmp/austincbrooks-proxygen.desktop || true
+update-desktop-database
+
+
+# Remove menu item icons.
+rm /usr/share/icons/hicolor/scalable/apps/austincbrooks-proxygen.svg || true
 for F in icons/proxygen-*.png; do
     [ -f "${F}" ] || continue
     PXG_ICON_RES=$(basename "${F/proxygen-/}" .png)
@@ -46,6 +59,14 @@ for F in icons/proxygen-*.png; do
         --size "${PXG_ICON_RES}" \
         austincbrooks-proxygen \
         --noupdate
+done
+
+
+# Remove MIME type icons.
+rm /usr/share/icons/hicolor/scalable/mimetypes/austincbrooks-proxygen.svg || true
+for F in icons/mimetype-*.png; do
+    [ -f "${F}" ] || continue
+    PXG_ICON_RES=$(basename "${F/mimetype-/}" .png)
     xdg-icon-resource uninstall \
         --mode system \
         --context mimetypes \
@@ -56,23 +77,15 @@ done
 gtk-update-icon-cache --force /usr/share/icons/hicolor
 
 
-# Remove "open with" association.
+# Remove MIME type for "open with" association.
 xdg-mime uninstall \
     --mode system \
     etc/debian/austincbrooks-pxg.xml
 update-mime-database /usr/share/mime
 
 
-# Remove app menu item.
-xdg-desktop-menu uninstall \
-    --mode system \
-    etc/debian/austincbrooks-proxygen.desktop
-update-desktop-database
-
-
 # Remove "PATH" redirection script.
-[ -f /usr/bin/proxygen ] \
-    && rm -f /usr/bin/proxygen
+rm -f /usr/bin/proxygen || true
 
 
 # Cleanup.

@@ -2,7 +2,7 @@
 Name=Proxygen
 Comment=Media offloader and proxy generator for video editors
 Icon=austincbrooks-proxygen
-Exec=/opt/Proxygen/bin/proxygen "%f"
+Exec=set by: os_debian_register_*
 Terminal=false
 Type=Application
 Categories=AudioVideo
