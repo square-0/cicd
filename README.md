@@ -51,6 +51,7 @@ These are areas that welcome contributions:
   - Linux ARM
   - Windows ARM
   - macOS x64 and ARM
+  - Desktop integration
 
 - **Refinements**
   - Security
