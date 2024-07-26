@@ -1,6 +1,7 @@
 to do:
 add i18n tests
 set locale
+can scripts be called multiple times, compile okay, clear staging first?
 
 single vs double quotes used properly for ${} expansion
 all filenames wrapped with single quotes unless a ${} inside
